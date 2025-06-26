@@ -4,23 +4,38 @@ const Product = require("../models/Product");
 const Order = require("../models/Order");
 const crypto = require("crypto");
 
-var {
-  validatePaymentVerification,
-} = require("razorpay/dist/utils/razorpay-utils");
+let instance = null;
+let validatePaymentVerification = () => false;
 
-var instance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// Initialize Razorpay conditionally
+if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+  instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
 
+  // Only require this if Razorpay is set up
+  validatePaymentVerification =
+    require("razorpay/dist/utils/razorpay-utils").validatePaymentVerification;
+} else {
+  console.warn("⚠️ Razorpay is disabled: Missing key_id or key_secret in .env");
+}
+
+// ----------------- Generate Payment ------------------
 const generatePayment = async (req, res) => {
+  if (!instance) {
+    return res
+      .status(503)
+      .json({ success: false, message: "Payment service is currently disabled." });
+  }
+
   const userId = req.id;
 
   try {
     const { amount } = req.body;
 
     const options = {
-      amount: amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      amount: amount * 100, // INR in paisa
       currency: "INR",
       receipt: Math.random().toString(36).substring(2),
     };
@@ -28,9 +43,7 @@ const generatePayment = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     instance.orders.create(options, async (err, order) => {
@@ -52,8 +65,16 @@ const generatePayment = async (req, res) => {
   }
 };
 
+// ----------------- Verify Payment ------------------
 const verifyPayment = async (req, res) => {
+  if (!instance) {
+    return res
+      .status(503)
+      .json({ success: false, message: "Payment service is currently disabled." });
+  }
+
   const userId = req.id;
+
   try {
     const {
       razorpay_order_id,
@@ -80,6 +101,7 @@ const verifyPayment = async (req, res) => {
         .json({ success: false, message: "Payment verification failed" });
     }
 
+    // Update user and product info
     for (const product of productArray) {
       await User.findByIdAndUpdate(
         { _id: userId },

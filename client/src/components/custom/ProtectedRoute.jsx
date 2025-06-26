@@ -7,6 +7,11 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, role } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
 
+  // Allow admin login for unauthenticated users
+  if (!isAuthenticated && pathname === "/admin/login") {
+    return children;
+  }
+
   if (isAuthenticated && role === "admin" && pathname === "/admin/login") {
     return <Navigate to="/admin/dashboard" />;
   }

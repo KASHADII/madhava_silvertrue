@@ -72,9 +72,9 @@ export default function App() {
     {
       path: "/admin/login",
       element: (
-        <ProtectedRoute>
+        
           <RootLayout children={<AdminLogin />} />
-        </ProtectedRoute>
+        
       ),
     },
     {
