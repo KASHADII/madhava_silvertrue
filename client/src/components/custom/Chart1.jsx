@@ -28,16 +28,16 @@ const chartData = [
 ];
 
 const chartConfig = {
-  keyboard: {
-    label: "Keyboard",
+  Jewellery: {
+    label: "Jewellery",
     color: Colors.customGray,
   },
-  mouse: {
-    label: "Mouse",
+  Ring: {
+    label: "Ring",
     color: Colors.customYellow,
   },
-  headset: {
-    label: "Headset",
+  Necklace: {
+    label: "Necklace",
     color: Colors.customIsabelline,
   },
 };

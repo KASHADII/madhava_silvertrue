@@ -302,9 +302,9 @@ const AllProducts = () => {
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Headset">Headset</SelectItem>
-                    <SelectItem value="Keyboard">Keyboard</SelectItem>
-                    <SelectItem value="Mouse">Mouse</SelectItem>
+                    <SelectItem value="Jewellery">Jewellery</SelectItem>
+                    <SelectItem value="Ring">Ring</SelectItem>
+                    <SelectItem value="Necklace">Necklace</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

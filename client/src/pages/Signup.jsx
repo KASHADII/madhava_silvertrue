@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
@@ -13,21 +12,19 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { name, email, phone, password } = e.target.elements;
-
     if (
-      name.value.trim() == "" ||
-      email.value.trim() == "" ||
-      phone.value.trim() == "" ||
-      password.value.trim() == ""
+      name.value.trim() === "" ||
+      email.value.trim() === "" ||
+      phone.value.trim() === "" ||
+      password.value.trim() === ""
     ) {
       toast({
         title: "Please fill all the fields",
         variant: "destructive",
       });
+      return;
     }
-
     try {
       const res = await axios.post(import.meta.env.VITE_API_URL + "/signup", {
         name: name.value,
@@ -35,64 +32,36 @@ const Signup = () => {
         email: email.value,
         password: password.value,
       });
-
       const data = await res.data;
-
       toast({
         title: data.message,
       });
-
       navigate("/login");
     } catch (error) {
       toast({
-        title: error.data.response.message,
+        title: error?.response?.data?.message || "Signup failed",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <>
-      <div className="w-[60vw] lg:w-[25vw] mx-auto my-10 grid gap-3">
-        <h1 className="text-2xl font-bold">Register your account</h1>
-        <form className="grid gap-3" onSubmit={handleSubmit}>
-          <Input placeholder="Enter Your Name" type="text" name="name" />
-          <Input placeholder="Enter Your Email" type="email" name="email" />
-          <Input placeholder="Enter Your Phone" type="tel" name="phone" />
-          <Input
-            placeholder="Enter Your Password"
-            type="password"
-            name="password"
-          />
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" onCheckedChange={(e) => setEnabled(e)} />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Accept terms and conditions
-            </label>
-          </div>
-          <Button disabled={!enabled}>Sign Up</Button>
-          <div className="flex gap-2 items-center">
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Already have an account?
-            </label>
-            <Link to={"/login"}>
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Login
-              </label>
-            </Link>
+    <div className="flex items-center justify-center min-h-screen bg-[#fffbe6]">
+      <div className="bg-white border-2 border-[#D4AF37] rounded-3xl shadow-xl p-8 w-full max-w-md">
+        <h1 className="text-3xl font-bold text-[#D4AF37] mb-6 text-center">Create Your Account</h1>
+        <form className="grid gap-5" onSubmit={handleSubmit}>
+          <Input placeholder="Enter Your Name" type="text" name="name" className="rounded-full border-[#D4AF37] focus:ring-[#D4AF37]" />
+          <Input placeholder="Enter Your Email" type="email" name="email" className="rounded-full border-[#D4AF37] focus:ring-[#D4AF37]" />
+          <Input placeholder="Enter Your Phone" type="text" name="phone" className="rounded-full border-[#D4AF37] focus:ring-[#D4AF37]" />
+          <Input placeholder="Enter Your Password" type="password" name="password" className="rounded-full border-[#D4AF37] focus:ring-[#D4AF37]" />
+          <Button className="bg-[#D4AF37] text-white rounded-full font-semibold shadow hover:bg-[#bfa133] transition">Sign Up</Button>
+          <div className="flex gap-2 items-center justify-center">
+            <span className="text-sm text-gray-700">Already have an account?</span>
+            <Link to="/login" className="text-[#D4AF37] font-semibold hover:underline">Login</Link>
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
