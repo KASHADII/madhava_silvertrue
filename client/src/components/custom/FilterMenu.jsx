@@ -13,7 +13,7 @@ import { setProducts } from "@/redux/slices/productSlice";
 
 const categoryData = {
   trigger: "Category",
-  items: ["keyboard", "mouse", "headset"],
+  items: ["Ring", "Necklace", "Earrings", "Bracelet", "Pendant"],
 };
 
 const priceData = {

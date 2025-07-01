@@ -1,8 +1,9 @@
 const { addPincodes, getPincode } = require("../controllers/pincodeController");
 const router = require("express").Router();
 const verifyToken = require("../middlewares/verifyToken");
+const { pincodeLimiter } = require("../middlewares/rateLimiter");
 
-router.post("/add-pincodes", verifyToken, addPincodes);
+router.post("/add-pincodes", verifyToken, pincodeLimiter, addPincodes);
 
 router.get("/get-pincode/:pincode", getPincode);
 

@@ -22,6 +22,8 @@ import { store } from "./redux/store";
 import MyOrders from "./pages/MyOrders";
 import { Toaster } from "./components/ui/toaster";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
+import Catalogue from "./pages/Catalogue";
+import About from "./pages/About";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -114,6 +116,22 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <AdminLayout children={<Settings />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/catalogue",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<Catalogue />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/about",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<About />} />
         </ProtectedRoute>
       ),
     },

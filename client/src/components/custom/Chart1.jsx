@@ -28,21 +28,29 @@ const chartData = [
 ];
 
 const chartConfig = {
-  Jewellery: {
-    label: "Jewellery",
+  keyboard: {
+    label: "Keyboard",
     color: Colors.customGray,
   },
-  Ring: {
-    label: "Ring",
+  mouse: {
+    label: "Mouse",
     color: Colors.customYellow,
   },
-  Necklace: {
-    label: "Necklace",
+  headset: {
+    label: "Headset",
     color: Colors.customIsabelline,
   },
 };
 
 export function Chart1() {
+  // Safe tick formatter that handles different data types
+  const safeTickFormatter = (value) => {
+    if (typeof value === 'string' && value.length > 0) {
+      return value.slice(0, 3);
+    }
+    return String(value || '');
+  };
+
   return (
     <Card className="flex-1 rounded-xl bg-muted/50 md:min-hmin">
       <CardHeader>
@@ -58,7 +66,7 @@ export function Chart1() {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={safeTickFormatter}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar dataKey="keyboard" fill="var(--color-keyboard)" radius={4} />

@@ -32,7 +32,7 @@ const HeaderDisplay = () => {
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 rounded-3xl">
                   <h2 className="text-4xl font-bold text-[#fff] drop-shadow-lg mb-2">Shine Bright</h2>
                   <p className="text-lg text-[#fff] mb-4">Explore our new arrivals in gold & silver</p>
-                  <a href="#collections" className="px-6 py-2 bg-[#D4AF37] text-white rounded-full font-semibold shadow hover:bg-[#bfa133] transition">Shop Collection</a>
+                  <a href="/catalogue" className="px-6 py-2 bg-[#D4AF37] text-white rounded-full font-semibold shadow hover:bg-[#bfa133] transition">Shop Collection</a>
                 </div>
               </div>
             </CarouselItem>

@@ -144,7 +144,14 @@ const CreateProducts = () => {
   }
 
   return (
-    <div className="w-full max-w-2xl -z-10">
+    <div className="w-full max-w-2xl">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Create Products</h1>
+        <p className="text-muted-foreground mt-2">
+          Add new products to your e-commerce store
+        </p>
+      </div>
+      
       <CardHeader>
         <CardTitle className="text-2xl">Add New Product</CardTitle>
         <CardDescription>
@@ -207,9 +214,11 @@ const CreateProducts = () => {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Jewellery">Jewellery</SelectItem>
                   <SelectItem value="Ring">Ring</SelectItem>
-                  <SelectItem value="Necklace">Neclace</SelectItem>
+                  <SelectItem value="Necklace">Necklace</SelectItem>
+                  <SelectItem value="Earrings">Earrings</SelectItem>
+                  <SelectItem value="Bracelet">Bracelet</SelectItem>
+                  <SelectItem value="Pendant">Pendant</SelectItem>
                 </SelectContent>
               </Select>
             </div>

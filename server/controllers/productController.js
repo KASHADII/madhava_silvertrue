@@ -1,5 +1,7 @@
 const { ROLES } = require("../utils/constants");
 const Product = require("../models/Product");
+const Review = require("../models/Review");
+const Order = require("../models/Order");
 const cloudinary = require("../utils/cloudinary");
 
 const createProduct = async (req, res) => {
@@ -79,16 +81,53 @@ const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findByIdAndDelete(id);
+    // Find the product first to get image information
+    const product = await Product.findById(id);
 
     if (!product)
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
 
+    // Delete images from Cloudinary if they exist
+    if (product.images && product.images.length > 0) {
+      try {
+        for (const image of product.images) {
+          if (image.id) {
+            await cloudinary.uploader.destroy(image.id);
+          }
+        }
+      } catch (cloudinaryError) {
+        console.error("Error deleting images from Cloudinary:", cloudinaryError);
+        // Continue with product deletion even if image deletion fails
+      }
+    }
+
+    // Delete associated reviews
+    try {
+      await Review.deleteMany({ productId: id });
+    } catch (reviewError) {
+      console.error("Error deleting reviews:", reviewError);
+      // Continue with product deletion even if review deletion fails
+    }
+
+    // Remove product from orders (set to null or remove from array)
+    try {
+      await Order.updateMany(
+        { "products.id": id },
+        { $pull: { products: { id: id } } }
+      );
+    } catch (orderError) {
+      console.error("Error updating orders:", orderError);
+      // Continue with product deletion even if order update fails
+    }
+
+    // Delete the product from database
+    await Product.findByIdAndDelete(id);
+
     return res.status(200).json({
       success: true,
-      message: "Product deleted successfully",
+      message: `Product "${product.name}" deleted successfully`,
       data: product,
     });
   } catch (error) {
@@ -105,15 +144,15 @@ const getProducts = async (req, res) => {
 
     let query = {};
 
-    if (category) {
-      query.category = category.charAt(0).toUpperCase() + category.slice(1);
+    if (category && category !== "all") {
+      query.category = category;
     }
-
-    if (category == "all") delete query.category;
 
     if (search) query.name = { $regex: search, $options: "i" };
 
     if (price > 0) query.price = { $lte: price };
+
+    if (category === "all") delete query.category;
 
     console.log(query);
 
@@ -133,12 +172,6 @@ const getProducts = async (req, res) => {
       delete productObj.images;
       newProductsArray.push(productObj);
     });
-
-    if (!products.length) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No products found" });
-    }
 
     return res.status(200).json({
       success: true,

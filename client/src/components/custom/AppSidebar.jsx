@@ -63,31 +63,42 @@ const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <h3 className="text-xl font-bold">Dashboard</h3>
+        <h3 className="text-xl font-bold px-2">Dashboard</h3>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu>
-            {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  asChild
-                  className={`${
-                    pathname === item.url && "bg-zinc-200 dark:bg-zinc-600"
-                  }`}
-                >
-                  <Link to={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    className={`w-full justify-start gap-2 ${
+                      pathname === item.url 
+                        ? "bg-sidebar-accent text-sidebar-accent-foreground" 
+                        : "hover:bg-sidebar-accent/50"
+                    }`}
+                  >
+                    <Link to={item.url}>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={() => dispatch(setUserLogout())}>Logout</Button>
+        <Button 
+          onClick={() => dispatch(setUserLogout())} 
+          variant="outline" 
+          className="w-full"
+        >
+          Logout
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );

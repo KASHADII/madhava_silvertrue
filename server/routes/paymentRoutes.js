@@ -4,7 +4,8 @@ const {
   verifyPayment,
 } = require("../controllers/paymentController");
 const verifyToken = require("../middlewares/verifyToken");
+const { paymentLimiter } = require("../middlewares/rateLimiter");
 
-router.post("/generate-payment", verifyToken, generatePayment);
-router.post("/verify-payment", verifyToken, verifyPayment);
+router.post("/generate-payment", verifyToken, paymentLimiter, generatePayment);
+router.post("/verify-payment", verifyToken, paymentLimiter, verifyPayment);
 module.exports = router;

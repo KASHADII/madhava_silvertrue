@@ -5,13 +5,14 @@ const {
   adminLogin,
 } = require("../controllers/authController");
 const router = require("express").Router();
+const { authLimiter, adminAuthLimiter } = require("../middlewares/rateLimiter");
 
-router.post("/signup", signup);
+router.post("/signup", authLimiter, signup);
 
-router.post("/login", login);
+router.post("/login", authLimiter, login);
 
-router.post("/admin-signup", adminSignup);
+router.post("/admin-signup", adminAuthLimiter, adminSignup);
 
-router.post("/admin-login", adminLogin);
+router.post("/admin-login", adminAuthLimiter, adminLogin);
 
 module.exports = router;
