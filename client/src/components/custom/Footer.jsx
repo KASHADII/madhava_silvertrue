@@ -1,222 +1,196 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { FacebookIcon, Twitter, Youtube } from "lucide-react";
+import { 
+  FacebookIcon, 
+  Twitter, 
+  Youtube, 
+  Instagram, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Sparkles,
+  Heart,
+  Shield,
+  Truck,
+  CreditCard
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <>
-      <footer className="footer-1 bg-gray-100 dark:bg-zinc-900 py-8 sm:py-12 mt-10">
-        <div className="container mx-auto px-4">
-          <div className="sm:flex sm:flex-wrap sm:-mx-4 md:py-4">
-            <div className="px-4 sm:w-1/2 md:w-1/4 xl:w-1/6">
-              <h5 className="text-xl font-bold mb-6 dark:text-white">Features</h5>
-              <ul className="list-none footer-links">
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Cool stuff
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Random feature
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Team feature
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Stuff for developers
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Another one
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Last time
-                  </a>
-                </li>
-              </ul>
+    <footer className="bg-gradient-to-b from-[#fffbe6] to-[#f5f5f5] border-t border-[#f5e7c5]">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="h-8 w-8 text-[#D4AF37]" />
+              <h3 className="text-2xl font-bold text-[#D4AF37]">Madhava Silver</h3>
             </div>
-            <div className="px-4 sm:w-1/2 md:w-1/4 xl:w-1/6 mt-8 sm:mt-0">
-              <h5 className="text-xl font-bold mb-6 dark:text-white">Resources</h5>
-              <ul className="list-none footer-links">
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Resource
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Resource name
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Another resource
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Final resource
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="px-4 sm:w-1/2 md:w-1/4 xl:w-1/6 mt-8 md:mt-0">
-              <h5 className="text-xl font-bold mb-6 dark:text-white">About</h5>
-              <ul className="list-none footer-links">
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Team
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Locations
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Privacy
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Terms
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="px-4 sm:w-1/2 md:w-1/4 xl:w-1/6 mt-8 md:mt-0">
-              <h5 className="text-xl font-bold mb-6 dark:text-white">Help</h5>
-              <ul className="list-none footer-links">
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Support
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Help Center
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a
-                    href="#"
-                    className="border-b border-solid border-transparent hover:border-customGray hover:text-customGrborder-customGray dark:hover:text-gray-300"
-                  >
-                    Contact Us
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="px-4 mt-4 sm:w-1/3 xl:w-1/6 sm:mx-auto xl:mt-0 xl:ml-auto">
-              <h5 className="text-xl font-bold mb-6 sm:text-center xl:text-left dark:text-white">
-                Stay connected
-              </h5>
-              <div className="flex sm:justify-center xl:justify-start">
-                <a
-                  href=""
-                  className="w-8 h-8 rounded-full text-center py-1 text-gray-600 dark:text-gray-300"
-                >
-                  <FacebookIcon />
-                </a>
-                <a
-                  href=""
-                  className="w-8 h-8 rounded-full text-center py-1 ml-2 text-gray-600 dark:text-gray-300"
-                >
-                  <Twitter />
-                </a>
-                <a
-                  href=""
-                  className="w-8 h-8 rounded-full text-center py-1 ml-2 text-gray-600 dark:text-gray-300"
-                >
-                  <Youtube />
-                </a>
-              </div>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Crafting timeless elegance with passion and precision. Discover our exclusive collection of gold, silver, and diamond jewellery designed to make every moment shine.
+            </p>
+            <div className="flex space-x-4">
+              <a
+                href="#"
+                className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-white hover:bg-[#bfa133] transition-colors"
+              >
+                <FacebookIcon className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-white hover:bg-[#bfa133] transition-colors"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-white hover:bg-[#bfa133] transition-colors"
+              >
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="w-10 h-10 bg-[#D4AF37] rounded-full flex items-center justify-center text-white hover:bg-[#bfa133] transition-colors"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
             </div>
           </div>
 
-          <div className="sm:flex sm:flex-wrap sm:-mx-4 mt-6 pt-6 sm:mt-12 sm:pt-12 border-t dark:border-gray-700">
-            <div className="sm:w-full px-4 md:w-1/6">
-              <strong className="dark:text-white">FWR</strong>
-            </div>
-            <div className="px-4 sm:w-1/2 md:w-1/4 mt-4 md:mt-0">
-              <h6 className="font-bold mb-2 dark:text-white">Address</h6>
-              <address className="not-italic mb-4 text-sm dark:text-gray-300">
-                123 6th St.
-                <br />
-                Melbourne, FL 32904
-              </address>
-            </div>
-            <div className="px-4 sm:w-1/2 md:w-1/4 mt-4 md:mt-0">
-              <h6 className="font-bold mb-2 dark:text-white">Free Resources</h6>
-              <p className="mb-4 text-sm dark:text-gray-300">
-                Use our HTML blocks for <strong>FREE</strong>.<br />
-                <em>All are MIT License</em>
-              </p>
-            </div>
-            <div className="px-4 md:w-1/4 md:ml-auto mt-6 sm:mt-4 md:mt-0">
-              <Button className="px-4 py-2 dark:bg-gray-700 dark:text-white">Get Started</Button>
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-bold text-[#D4AF37] mb-4">Quick Links</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/catalogue" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Shop Collection
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/myorders" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  My Orders
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Customer Service */}
+          <div>
+            <h4 className="text-lg font-bold text-[#D4AF37] mb-4">Customer Service</h4>
+            <ul className="space-y-3">
+              <li>
+                <a href="#" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Contact Support
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Shipping Info
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Returns & Exchanges
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-600 hover:text-[#D4AF37] transition-colors">
+                  Size Guide
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-lg font-bold text-[#D4AF37] mb-4">Contact Us</h4>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 text-[#D4AF37]" />
+                <span className="text-gray-600 text-sm">
+                  123 Jewellery Street<br />
+                  Mumbai, Maharashtra 400001
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-[#D4AF37]" />
+                <span className="text-gray-600 text-sm">+91 98765 43210</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-[#D4AF37]" />
+                <span className="text-gray-600 text-sm">info@madhava.com</span>
+              </div>
             </div>
           </div>
         </div>
-      </footer>
-    </>
+
+        {/* Features Section */}
+        <div className="mt-12 pt-8 border-t border-[#f5e7c5]">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="flex items-center gap-3">
+              <Shield className="h-8 w-8 text-[#D4AF37]" />
+              <div>
+                <h5 className="font-semibold text-gray-800">Authentic Quality</h5>
+                <p className="text-sm text-gray-600">Certified genuine jewellery</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Truck className="h-8 w-8 text-[#D4AF37]" />
+              <div>
+                <h5 className="font-semibold text-gray-800">Free Shipping</h5>
+                <p className="text-sm text-gray-600">On orders above ₹2,000</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <CreditCard className="h-8 w-8 text-[#D4AF37]" />
+              <div>
+                <h5 className="font-semibold text-gray-800">Secure Payment</h5>
+                <p className="text-sm text-gray-600">100% secure transactions</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Heart className="h-8 w-8 text-[#D4AF37]" />
+              <div>
+                <h5 className="font-semibold text-gray-800">Customer Love</h5>
+                <p className="text-sm text-gray-600">Trusted by thousands</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Footer */}
+      <div className="bg-[#D4AF37] text-white py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-center md:text-left mb-4 md:mb-0">
+              <p className="text-sm">
+                © 2024 Madhava Silver. All rights reserved. | 
+                <a href="#" className="hover:underline ml-1">Privacy Policy</a> | 
+                <a href="#" className="hover:underline ml-1">Terms of Service</a>
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm">Made with</span>
+              <Heart className="h-4 w-4 text-red-500" />
+              <span className="text-sm">in India</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 
