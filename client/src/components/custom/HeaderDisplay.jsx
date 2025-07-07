@@ -5,41 +5,87 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ChevronRight } from "lucide-react";
 
 const imagesData = [
-  // Premium jewellery images (royalty-free)
-  "https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg?auto=compress&w=800",
-  "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&w=800",
-  "https://images.pexels.com/photos/1191532/pexels-photo-1191532.jpeg?auto=compress&w=800",
-  "https://images.pexels.com/photos/3641055/pexels-photo-3641055.jpeg?auto=compress&w=800",
+  {
+    image: "https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg?auto=compress&w=800",
+    title: "Elegant Necklaces",
+    subtitle: "Timeless sophistication for every occasion",
+    cta: "Discover Collection"
+  },
+  {
+    image: "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&w=800",
+    title: "Classic Earrings",
+    subtitle: "Refined elegance that speaks volumes",
+    cta: "Explore Designs"
+  },
+  {
+    image: "https://images.pexels.com/photos/1191532/pexels-photo-1191532.jpeg?auto=compress&w=800",
+    title: "Statement Rings",
+    subtitle: "Bold statements for the confident woman",
+    cta: "View Collection"
+  },
+  {
+    image: "https://images.pexels.com/photos/3641055/pexels-photo-3641055.jpeg?auto=compress&w=800",
+    title: "Luxury Bracelets",
+    subtitle: "Sophisticated charm for your wrist",
+    cta: "Shop Now"
+  },
 ];
 
 const HeaderDisplay = () => {
   return (
-    <div className="relative">
-      <Carousel className="my-10 mx-auto w-[93vw] overflow-x-clip sm:overflow-visible">
+    <div className="relative py-20">
+      <Carousel className="mx-auto w-full max-w-7xl overflow-hidden">
         <CarouselContent>
-          {imagesData.map((image, idx) => (
-            <CarouselItem key={image}>
-              <div className="relative">
+          {imagesData.map((slide, idx) => (
+            <CarouselItem key={idx}>
+              <div className="relative h-[70vh] overflow-hidden">
                 <img
-                  src={image}
+                  src={slide.image}
                   loading="lazy"
-                  className="object-cover w-full h-[60vh] rounded-3xl border-4 border-[#D4AF37] shadow-xl"
-                  alt={`Jewellery Banner ${idx + 1}`}
+                  className="object-cover w-full h-full"
+                  alt={`Luxury Jewelry ${idx + 1}`}
                 />
-                {/* Overlay text for hero effect */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 rounded-3xl">
-                  <h2 className="text-4xl font-bold text-[#fff] drop-shadow-lg mb-2">Shine Bright</h2>
-                  <p className="text-lg text-[#fff] mb-4">Explore our new arrivals in gold & silver</p>
-                  <a href="/catalogue" className="px-6 py-2 bg-[#D4AF37] text-white rounded-full font-semibold shadow hover:bg-[#bfa133] transition">Shop Collection</a>
+                
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
+                
+                {/* Content overlay */}
+                <div className="absolute inset-0 flex items-center">
+                  <div className="ml-16 md:ml-24 max-w-md">
+                    <h2 className="text-4xl md:text-6xl font-light text-white mb-4 tracking-tight">
+                      {slide.title}
+                    </h2>
+                    <p className="text-lg md:text-xl text-white/90 mb-8 font-light leading-relaxed">
+                      {slide.subtitle}
+                    </p>
+                    <a 
+                      href="/catalogue" 
+                      className="group inline-flex items-center gap-2 px-8 py-4 bg-[#D4AF37] text-white font-medium tracking-wide hover:bg-[#B8941F] transition-all duration-300"
+                    >
+                      {slide.cta}
+                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-8 right-8 opacity-20">
+                  <div className="w-16 h-16 border border-[#D4AF37] rounded-full"></div>
+                </div>
+                <div className="absolute bottom-8 right-16 opacity-20">
+                  <div className="w-8 h-8 border border-[#D4AF37] rounded-full"></div>
                 </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        
+        {/* Custom navigation buttons */}
+        <CarouselPrevious className="left-4 bg-white/20 hover:bg-white/30 border-0 text-white" />
+        <CarouselNext className="right-4 bg-white/20 hover:bg-white/30 border-0 text-white" />
       </Carousel>
     </div>
   );
