@@ -13,19 +13,17 @@ const Analytics = () => {
   useEffect(() => {
     const getMetrics = async () => {
       try {
+        const token = localStorage.getItem("token");
         const res = await axios.get(
-          import.meta.env.VITE_API_URL + "/get-metrics",
+          import.meta.env.VITE_API_URL + "/settings/get-metrics",
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         const { data } = await res.data;
         setMetrics(data);
       } catch (error) {
-        return handleErrorLogout(error);
+        handleErrorLogout(error);
       }
     };
 

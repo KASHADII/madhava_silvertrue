@@ -17,6 +17,7 @@ import AllProducts from "./components/custom/AllProducts";
 import Analytics from "./components/custom/Analytics";
 import Orders from "./components/custom/Orders";
 import Settings from "./components/custom/Settings";
+import Categories from "./components/custom/Categories";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import MyOrders from "./pages/MyOrders";
@@ -24,6 +25,7 @@ import { Toaster } from "./components/ui/toaster";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import Catalogue from "./pages/Catalogue";
 import About from "./pages/About";
+import Discounts from "./components/custom/Discounts";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -116,6 +118,22 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <AdminLayout children={<Settings />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/categories",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<Categories />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/discounts",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<Discounts />} />
         </ProtectedRoute>
       ),
     },

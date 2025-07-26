@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchRecentProducts = async () => {
-      const res = await axios.get(import.meta.env.VITE_API_URL + "/get-products?page=1&limit=4");
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/products/get-products?page=1&limit=4");
       const data = await res.data;
       setRecentProducts(data.data || []);
     };

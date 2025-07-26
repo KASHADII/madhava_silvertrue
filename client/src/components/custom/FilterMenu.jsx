@@ -11,33 +11,30 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setProducts } from "@/redux/slices/productSlice";
 
-const categoryData = {
-  trigger: "Category",
-  items: ["Ring", "Necklace", "Earrings", "Bracelet", "Pendant"],
-};
-
-const priceData = {
-  trigger: "Price",
-  items: [1000, 3000, 5000, 8000],
-};
-
 const FilterMenu = () => {
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("all");
   const [price, setPrice] = useState("");
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/categories/get-categories");
+      setCategories(res.data.data);
+    };
+    getCategories();
+  }, []);
 
   useEffect(() => {
     const getFilterProducts = async () => {
       const res = await axios.get(
         import.meta.env.VITE_API_URL +
-          `/get-products?category=${category}&price=${price}&search=${search}`
+          `/products/get-products?category=${category === "all" ? "" : category}&price=${price}&search=${search}`
       );
-      const data = await res.data;
-      dispatch(setProducts(data.data));
+      setProducts(res.data.data);
     };
-
     getFilterProducts();
   }, [category, price, search]);
 
@@ -46,26 +43,35 @@ const FilterMenu = () => {
       {/* DROPDOWN FILTERS */}
       <div className="flex sm:w-[30%] w-full gap-3">
         {/* FOR CATEGORY */}
-        <Select onValueChange={(value) => setCategory(value)}>
-          <SelectTrigger id={categoryData.trigger}>
-            <SelectValue placeholder={categoryData.trigger} />
+        <Select onValueChange={(value) => setCategory(value)} value={category}>
+          <SelectTrigger>
+            <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent position="popper">
-            {categoryData.items.map((item) => (
-              <SelectItem key={item} value={item} className="capitalize">
-                {item}
+            {categories.length === 0 ? (
+              <SelectItem value="none" disabled>
+                No categories available
               </SelectItem>
-            ))}
+            ) : (
+              <>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category._id} value={category.name} className="capitalize">
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </>
+            )}
           </SelectContent>
         </Select>
 
         {/* FOR PRICE */}
         <Select onValueChange={(value) => setPrice(value)}>
-          <SelectTrigger id={priceData.trigger}>
-            <SelectValue placeholder={priceData.trigger} />
+          <SelectTrigger id="Price">
+            <SelectValue placeholder="Price" />
           </SelectTrigger>
           <SelectContent position="popper">
-            {priceData.items.map((item) => (
+            {[1000, 3000, 5000, 8000].map((item) => (
               <SelectItem key={item} value={item} className="capitalize">
                 Less than {item}
               </SelectItem>

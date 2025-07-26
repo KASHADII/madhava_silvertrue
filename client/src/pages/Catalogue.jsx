@@ -11,12 +11,11 @@ const Catalogue = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchAllProducts = async () => {
-      const res = await axios.get(import.meta.env.VITE_API_URL + "/get-products?category=all");
-      const data = await res.data;
-      dispatch(setProducts(data.data));
+    const getProducts = async () => {
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/products/get-products?category=all");
+      dispatch(setProducts(res.data.data));
     };
-    fetchAllProducts();
+    getProducts();
   }, [dispatch]);
 
   return (
@@ -30,7 +29,7 @@ const Catalogue = () => {
             <Sparkles className="h-8 w-8" />
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Browse our exclusive collection of rings, necklaces, earrings, and more. 
+            Browse our exclusive collection of fine jewelry. 
             Find the perfect piece for every occasion.
           </p>
         </div>

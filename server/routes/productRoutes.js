@@ -10,18 +10,11 @@ const {
 } = require("../controllers/productController");
 const verifyToken = require("../middlewares/verifyToken");
 const upload = require("../middlewares/multer");
-const { 
-  productCreationLimiter, 
-  searchLimiter, 
-  uploadLimiter 
-} = require("../middlewares/rateLimiter");
 
 router.post(
   "/create-product",
   verifyToken,
-  uploadLimiter,
-  upload.array("images", 4),
-  productCreationLimiter,
+  upload.array("images", 10),
   createProduct
 );
 
@@ -29,9 +22,9 @@ router.put("/update-product/:id", verifyToken, updateProduct);
 
 router.delete("/delete-product/:id", verifyToken, deleteProduct);
 
-router.get("/get-products", searchLimiter, getProducts);
+router.get("/get-products", getProducts);
 
-router.get("/get-product-by-name/:name", searchLimiter, getProductByName);
+router.get("/get-product-by-name/:name", getProductByName);
 
 router.put("/blacklist-product/:id", verifyToken, blacklistProduct);
 

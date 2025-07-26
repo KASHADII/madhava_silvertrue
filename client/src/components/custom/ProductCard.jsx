@@ -7,14 +7,22 @@ const ProductCard = ({
   name = "Product Title",
   price = 2000,
   rating = 4,
-  image = {
+  images = [{
     url: "https://images.pexels.com/photos/3801990/pexels-photo-3801990.jpeg?auto=compress&cs=tinysrgb&w=600",
     id: "322dadaf",
-  },
+  }],
+  image, // For backward compatibility
   description = "",
   blacklisted = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Use the first image from the images array or fallback to image prop
+  const displayImage = images && images.length > 0 ? images[0] : 
+    (image || {
+      url: "https://images.pexels.com/photos/3801990/pexels-photo-3801990.jpeg?auto=compress&cs=tinysrgb&w=600",
+      id: "default",
+    });
 
   return (
     <div 
@@ -25,7 +33,7 @@ const ProductCard = ({
       {/* Product Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
         <img
-          src={image.url}
+          src={displayImage.url}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
@@ -78,7 +86,7 @@ const ProductCard = ({
         
         {/* Action Button */}
         <LinkButton
-          to={`/product/${name.split(" ").join("-")}`}
+          to={`/product/${encodeURIComponent(name)}`}
           text="View Details"
           className="w-full bg-black text-white font-medium tracking-wide py-3 hover:bg-[#C0C0C0] hover:text-black transition-all duration-300"
         />

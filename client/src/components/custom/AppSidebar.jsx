@@ -8,6 +8,8 @@ import {
   PackageSearch,
   Search,
   Settings,
+  Tag,
+  Percent,
 } from "lucide-react";
 
 import {
@@ -38,6 +40,16 @@ const items = [
     title: "All Products",
     url: "/admin/dashboard/all-products",
     icon: GalleryVerticalEnd,
+  },
+  {
+    title: "Categories",
+    url: "/admin/dashboard/categories",
+    icon: Tag,
+  },
+  {
+    title: "Discounts",
+    url: "/admin/dashboard/discounts",
+    icon: Percent,
   },
   {
     title: "Orders",

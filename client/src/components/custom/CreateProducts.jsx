@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   CardContent,
   CardDescription,
@@ -27,10 +27,30 @@ const CreateProducts = () => {
   const [colors, setColors] = useState([]);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const fileInputRef = useRef(null);
   const { toast } = useToast();
   const { handleErrorLogout } = useErrorLogout();
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        import.meta.env.VITE_API_URL + "/categories/get-categories-admin",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setCategories(res.data.data);
+    } catch (error) {
+      handleErrorLogout(error);
+    }
+  };
 
   const addColor = () => {
     if (!colors.includes(currentColor)) {
@@ -54,7 +74,7 @@ const CreateProducts = () => {
         preview: URL.createObjectURL(file),
         file,
       }));
-      setImages((prevImages) => [...prevImages, ...newImages].slice(0, 4));
+      setImages((prevImages) => [...prevImages, ...newImages].slice(0, 10));
     }
   };
 
@@ -95,10 +115,10 @@ const CreateProducts = () => {
       });
     }
 
-    if (images.length < 4) {
+    if (images.length === 0) {
       return toast({
         title: "Error",
-        description: "Please upload at least 4 images",
+        description: "Please upload at least 1 image",
       });
     }
 
@@ -214,11 +234,19 @@ const CreateProducts = () => {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Ring">Ring</SelectItem>
-                  <SelectItem value="Necklace">Necklace</SelectItem>
-                  <SelectItem value="Earrings">Earrings</SelectItem>
-                  <SelectItem value="Bracelet">Bracelet</SelectItem>
-                  <SelectItem value="Pendant">Pendant</SelectItem>
+                  {categories.length === 0 ? (
+                    <SelectItem value="none" disabled>
+                      No categories available
+                    </SelectItem>
+                  ) : (
+                    categories
+                      .filter(category => category.isActive)
+                      .map((category) => (
+                        <SelectItem key={category._id} value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                      ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -288,7 +316,7 @@ const CreateProducts = () => {
                     </div>
                   ))}
 
-                  {images.length < 4 && (
+                  {images.length < 10 && (
                     <Button
                       onClick={() => fileInputRef.current?.click()}
                       className="w-[100px] h-[100px]"
@@ -310,7 +338,7 @@ const CreateProducts = () => {
                   ref={fileInputRef}
                 />
                 <p className="text-sm text-muted-foreground mt-2">
-                  Upload up to 4 images. Supported Formats: JPG,PNG,GIF
+                  Upload up to 10 images. Supported Formats: JPG,PNG,GIF
                 </p>
               </div>
             </div>

@@ -2,6 +2,7 @@ const { ROLES } = require("../utils/constants");
 const Product = require("../models/Product");
 const Review = require("../models/Review");
 const Order = require("../models/Order");
+const Category = require("../models/Category");
 const cloudinary = require("../utils/cloudinary");
 
 const createProduct = async (req, res) => {
@@ -168,8 +169,6 @@ const getProducts = async (req, res) => {
 
     products.forEach((product) => {
       const productObj = product.toObject();
-      productObj.image = productObj.images[0];
-      delete productObj.images;
       newProductsArray.push(productObj);
     });
 
@@ -193,11 +192,22 @@ const getProductByName = async (req, res) => {
   const { name } = req.params;
 
   try {
-    const product = await Product.findOne({
-      name: {
-        $regex: new RegExp(name, "i"),
-      },
-    });
+    // First try exact match
+    let product = await Product.findOne({ name: name });
+
+    // If no exact match, try case-insensitive exact match
+    if (!product) {
+      product = await Product.findOne({
+        name: { $regex: new RegExp(`^${name}$`, "i") }
+      });
+    }
+
+    // If still no match, try partial match as fallback
+    if (!product) {
+      product = await Product.findOne({
+        name: { $regex: new RegExp(name, "i") }
+      });
+    }
 
     if (!product)
       return res

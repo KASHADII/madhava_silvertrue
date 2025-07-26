@@ -54,14 +54,16 @@ const Product = () => {
   useEffect(() => {
     const fetchProductByName = async () => {
       try {
+        const decodedProductName = decodeURIComponent(productName);
         const res = await axios.get(
           import.meta.env.VITE_API_URL +
-            `/get-product-by-name/${productName?.split("-").join(" ")}`
+            `/products/get-product-by-name/${decodedProductName}`
         );
         const { data } = await res.data;
-        console.log(data);
         setProduct(data);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
     };
 
     fetchProductByName();
@@ -75,7 +77,7 @@ const Product = () => {
       return;
     }
     const res = await axios.get(
-      import.meta.env.VITE_API_URL + `/get-pincode/${pincode}`
+      import.meta.env.VITE_API_URL + `/pincodes/get-pincode/${pincode}`
     );
     const data = await res.data;
     setAvailabilityMessage(data.message);
@@ -337,7 +339,7 @@ const Product = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <ReviewsComponent productId={product?._id}/>
+                {product?._id && <ReviewsComponent productId={product._id}/>}
               </CardContent>
             </Card>
           </div>

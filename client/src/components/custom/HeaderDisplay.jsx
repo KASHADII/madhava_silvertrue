@@ -6,40 +6,61 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ChevronRight } from "lucide-react";
-
-const imagesData = [
-  {
-    image: "https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg?auto=compress&w=800",
-    title: "Elegant Necklaces",
-    subtitle: "Timeless sophistication for every occasion",
-    cta: "Discover Collection"
-  },
-  {
-    image: "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&w=800",
-    title: "Classic Earrings",
-    subtitle: "Refined elegance that speaks volumes",
-    cta: "Explore Designs"
-  },
-  {
-    image: "https://images.pexels.com/photos/1191532/pexels-photo-1191532.jpeg?auto=compress&w=800",
-    title: "Statement Rings",
-    subtitle: "Bold statements for the confident woman",
-    cta: "View Collection"
-  },
-  {
-    image: "https://images.pexels.com/photos/3641055/pexels-photo-3641055.jpeg?auto=compress&w=800",
-    title: "Luxury Bracelets",
-    subtitle: "Sophisticated charm for your wrist",
-    cta: "Shop Now"
-  },
-];
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const HeaderDisplay = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/categories/get-categories");
+      setCategories(res.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  // Generate dynamic carousel data based on categories
+  const generateCarouselData = () => {
+    const defaultImages = [
+      "https://images.pexels.com/photos/1457983/pexels-photo-1457983.jpeg?auto=compress&w=800",
+      "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&w=800",
+      "https://images.pexels.com/photos/1191532/pexels-photo-1191532.jpeg?auto=compress&w=800",
+      "https://images.pexels.com/photos/3641055/pexels-photo-3641055.jpeg?auto=compress&w=800",
+    ];
+
+    const subtitles = [
+      "Timeless sophistication for every occasion",
+      "Refined elegance that speaks volumes",
+      "Bold statements for the confident woman",
+      "Sophisticated charm for your wrist",
+    ];
+
+    const ctas = [
+      "Discover Collection",
+      "Explore Designs",
+      "View Collection",
+      "Shop Now",
+    ];
+
+    return categories.slice(0, 4).map((category, index) => ({
+      image: defaultImages[index] || defaultImages[0],
+      title: category.name,
+      subtitle: subtitles[index] || "Beautiful jewelry for every occasion",
+      cta: ctas[index] || "Shop Now",
+    }));
+  };
+
   return (
     <div className="relative py-20">
       <Carousel className="mx-auto w-full max-w-7xl overflow-hidden">
         <CarouselContent>
-          {imagesData.map((slide, idx) => (
+          {generateCarouselData().map((slide, idx) => (
             <CarouselItem key={idx}>
               <div className="relative h-[70vh] overflow-hidden">
                 <img

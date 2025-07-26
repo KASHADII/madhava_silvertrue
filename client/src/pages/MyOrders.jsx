@@ -11,18 +11,17 @@ const MyOrders = () => {
   const { handleErrorLogout } = useErrorLogout();
 
   useEffect(() => {
-    const getMyOrders = async () => {
+    const getOrders = async () => {
       try {
         setLoading(true);
+        const token = localStorage.getItem("token");
         const res = await axios.get(
-          import.meta.env.VITE_API_URL + "/get-orders-by-user-id",
+          import.meta.env.VITE_API_URL + "/orders/get-orders-by-user-id",
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-        const { data } = res.data;
+        const { data } = await res.data;
         setOrders(data);
       } catch (error) {
         console.log(error)
@@ -32,7 +31,7 @@ const MyOrders = () => {
       }
     };
 
-    getMyOrders();
+    getOrders();
   }, []);
 
   return (

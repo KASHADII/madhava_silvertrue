@@ -32,11 +32,13 @@ const ReviewsComponent = ({ productId }) => {
     const getReviews = async () => {
       try {
         const res = await axios.get(
-          import.meta.env.VITE_API_URL + `/get-reviews/${productId}`
+          import.meta.env.VITE_API_URL + `/reviews/get-reviews/${productId}`
         );
         const { data } = await res.data;
         setReviewList(data);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
     };
     getReviews();
   }, [productId]);

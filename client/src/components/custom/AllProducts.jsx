@@ -45,6 +45,7 @@ const AllProducts = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [deletingProduct, setDeletingProduct] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -80,8 +81,27 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     fetchProducts();
   }, [searchTerm, category]);
+
+  const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        import.meta.env.VITE_API_URL + "/categories/get-categories-admin",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setCategories(res.data.data);
+    } catch (error) {
+      handleErrorLogout(error);
+    }
+  };
 
   const removeFromBlacklist = async (id) => {
     try {
@@ -271,11 +291,11 @@ const AllProducts = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="Ring">Ring</SelectItem>
-                <SelectItem value="Necklace">Necklace</SelectItem>
-                <SelectItem value="Earrings">Earrings</SelectItem>
-                <SelectItem value="Bracelet">Bracelet</SelectItem>
-                <SelectItem value="Pendant">Pendant</SelectItem>
+                {categories.map((cat) => (
+                  <SelectItem key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -394,11 +414,11 @@ const AllProducts = () => {
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Ring">Ring</SelectItem>
-                    <SelectItem value="Necklace">Necklace</SelectItem>
-                    <SelectItem value="Earrings">Earrings</SelectItem>
-                    <SelectItem value="Bracelet">Bracelet</SelectItem>
-                    <SelectItem value="Pendant">Pendant</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat._id} value={cat.name}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
