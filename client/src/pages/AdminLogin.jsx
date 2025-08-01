@@ -48,53 +48,57 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fffbe6] to-[#fff] flex items-center justify-center p-4">
-      <Card className="shadow-lg border-0 bg-white max-w-md w-full">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto mb-4 w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center">
-            <Shield className="h-8 w-8 text-white" />
-          </div>
-          <CardTitle className="text-3xl font-bold text-[#D4AF37] mb-2">
-            Admin Login
-          </CardTitle>
-          <p className="text-gray-600">Access your admin dashboard</p>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4" onSubmit={handleLogin}>
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <User className="h-4 w-4" />
-                Username
-              </label>
-              <Input 
-                placeholder="Enter your username" 
-                type="text" 
-                name="username"
-                className="border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-              />
-            </div>
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <Lock className="h-4 w-4" />
-                Password
-              </label>
-              <Input 
-                placeholder="Enter your password" 
-                type="password" 
-                name="password"
-                className="border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-              />
-            </div>
-            <Button 
-              type="submit"
-              className="w-full bg-[#D4AF37] hover:bg-[#bfa133] text-white font-semibold shadow-lg"
-            >
-              <Shield className="h-4 w-4 mr-2" />
-              Login to Dashboard
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-md mx-auto">
+          <Card className="shadow-lg border border-gray-200 bg-white">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 w-16 h-16 bg-black rounded-full flex items-center justify-center">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <CardTitle className="text-3xl font-light text-black mb-2">
+                Admin Login
+              </CardTitle>
+              <p className="text-gray-600 font-light">Access your admin dashboard</p>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-6" onSubmit={handleLogin}>
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                    <User className="h-4 w-4" />
+                    Username
+                  </label>
+                  <Input 
+                    placeholder="Enter your username" 
+                    type="text" 
+                    name="username"
+                    className="border-gray-200 focus:border-black focus:ring-black"
+                  />
+                </div>
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                    <Lock className="h-4 w-4" />
+                    Password
+                  </label>
+                  <Input 
+                    placeholder="Enter your password" 
+                    type="password" 
+                    name="password"
+                    className="border-gray-200 focus:border-black focus:ring-black"
+                  />
+                </div>
+                <Button 
+                  type="submit"
+                  className="w-full bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Login to Dashboard
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

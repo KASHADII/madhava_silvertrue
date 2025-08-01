@@ -16,30 +16,44 @@ const FilterMenu = () => {
   const [price, setPrice] = useState("");
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getCategories = async () => {
-      const res = await axios.get(import.meta.env.VITE_API_URL + "/categories/get-categories");
-      setCategories(res.data.data);
+      try {
+        setLoading(true);
+        const res = await axios.get(import.meta.env.VITE_API_URL + "/categories/get-categories");
+        setCategories(res.data.data || []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
     };
     getCategories();
   }, []);
 
   useEffect(() => {
     const getFilterProducts = async () => {
-      const res = await axios.get(
-        import.meta.env.VITE_API_URL +
-          `/products/get-products?category=${category === "all" ? "" : category}&price=${price}&search=${search}`
-      );
-      setProducts(res.data.data);
+      try {
+        const res = await axios.get(
+          import.meta.env.VITE_API_URL +
+            `/products/get-products?category=${category === "all" ? "" : category}&price=${price}&search=${search}`
+        );
+        dispatch(setProducts(res.data.data || []));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        dispatch(setProducts([]));
+      }
     };
     getFilterProducts();
-  }, [category, price, search]);
+  }, [category, price, search, dispatch]);
 
   return (
-    <div className="w-[93vw] flex flex-col sm:flex-row justify-between items-center mx-auto my-10 gap-3 sm:gap-0">
+    <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
       {/* DROPDOWN FILTERS */}
       <div className="flex sm:w-[30%] w-full gap-3">
         {/* FOR CATEGORY */}
@@ -48,7 +62,11 @@ const FilterMenu = () => {
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent position="popper">
-            {categories.length === 0 ? (
+            {loading ? (
+              <SelectItem value="loading" disabled>
+                Loading categories...
+              </SelectItem>
+            ) : !categories || categories.length === 0 ? (
               <SelectItem value="none" disabled>
                 No categories available
               </SelectItem>
@@ -73,7 +91,7 @@ const FilterMenu = () => {
           <SelectContent position="popper">
             {[1000, 3000, 5000, 8000].map((item) => (
               <SelectItem key={item} value={item} className="capitalize">
-                Less than {item}
+                Less than ₹{item}
               </SelectItem>
             ))}
           </SelectContent>
@@ -86,6 +104,7 @@ const FilterMenu = () => {
           id="search"
           placeholder="Search Here..."
           onChange={(e) => setSearch(e.target.value)}
+          className="border-gray-200 focus:border-black focus:ring-black"
         />
       </div>
     </div>

@@ -147,14 +147,14 @@ const Product = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fffbe6] to-[#fff] py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Product Images */}
-          <Card className="shadow-lg border-0 bg-white">
-            <CardHeader className="bg-gradient-to-r from-[#D4AF37] to-[#edcf5d] text-white">
-              <CardTitle className="flex items-center gap-2">
-                <Package className="h-5 w-5" />
+          <Card className="shadow-lg border border-gray-200 bg-white">
+            <CardHeader className="bg-white border-b border-gray-200">
+              <CardTitle className="flex items-center gap-2 text-black font-light">
+                <Package className="h-5 w-5 text-black" />
                 Product Images
               </CardTitle>
             </CardHeader>
@@ -162,7 +162,7 @@ const Product = () => {
               <div className="space-y-4">
                 <img
                   src={product?.images?.[selectedImage]?.url}
-                  className="w-full h-96 rounded-xl object-center object-cover border"
+                  className="w-full h-96 rounded-xl object-center object-cover border border-gray-200"
                   alt={product?.name}
                 />
                 <div className="grid grid-cols-4 gap-3">
@@ -171,7 +171,7 @@ const Product = () => {
                       src={url}
                       key={id}
                       onClick={() => setSelectedImage(index)}
-                      className="rounded-xl filter hover:brightness-50 cursor-pointer transition-all ease-in-out duration-300 border"
+                      className="rounded-xl filter hover:brightness-50 cursor-pointer transition-all ease-in-out duration-300 border border-gray-200"
                       alt={`${product?.name} ${index + 1}`}
                     />
                   ))}
@@ -183,38 +183,38 @@ const Product = () => {
           {/* Product Details */}
           <div className="space-y-6">
             {/* Product Info */}
-            <Card className="shadow-lg border-0 bg-white">
-              <CardHeader className="bg-gradient-to-r from-[#D4AF37] to-[#edcf5d] text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <Star className="h-5 w-5" />
+            <Card className="shadow-lg border border-gray-200 bg-white">
+              <CardHeader className="bg-white border-b border-gray-200">
+                <CardTitle className="flex items-center gap-2 text-black font-light">
+                  <Star className="h-5 w-5 text-black" />
                   Product Details
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div>
-                    <h2 className="text-3xl font-bold text-[#D4AF37] mb-2">{product?.name}</h2>
-                    <p className="text-gray-600">{product?.description}</p>
+                    <h2 className="text-3xl font-light text-black mb-2">{product?.name}</h2>
+                    <p className="text-gray-600 font-light">{product?.description}</p>
                     <div className="flex items-center mt-3">
                       {starsGenerator(product.rating, "0", 15)}
-                      <span className="text-md ml-2 text-gray-600">
+                      <span className="text-md ml-2 text-gray-600 font-light">
                         ({product?.reviews?.length} reviews)
                       </span>
                     </div>
                   </div>
 
                   <div className="border-t border-b border-gray-200 py-4">
-                    <h3 className="text-2xl font-bold text-[#D4AF37] mb-1">
+                    <h3 className="text-2xl font-light text-black mb-1">
                       ₹{product.price} or ₹{calculateEmi(product.price)}/month
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 font-light">
                       Suggested payments with 6 months special financing
                     </p>
                   </div>
 
                   {/* Color Selection */}
                   <div>
-                    <h3 className="font-bold text-lg mb-3">Choose Color</h3>
+                    <h3 className="font-medium text-lg mb-3 text-black">Choose Color</h3>
                     <div className="flex items-center gap-3">
                       {product?.colors?.map((color, index) => (
                         <Circle
@@ -232,18 +232,18 @@ const Product = () => {
 
                   {/* Quantity Selection */}
                   <div>
-                    <h3 className="font-bold text-lg mb-3">Quantity</h3>
+                    <h3 className="font-medium text-lg mb-3 text-black">Quantity</h3>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-3 bg-gray-100 rounded-full px-4 py-2">
                         <Minus
-                          className="cursor-pointer text-gray-600 hover:text-[#D4AF37]"
+                          className="cursor-pointer text-gray-600 hover:text-black"
                           onClick={() =>
                             setProductQuantity((qty) => (qty > 1 ? qty - 1 : 1))
                           }
                         />
-                        <span className="font-semibold text-lg">{productQuantity}</span>
+                        <span className="font-medium text-lg">{productQuantity}</span>
                         <Plus
-                          className="cursor-pointer text-gray-600 hover:text-[#D4AF37]"
+                          className="cursor-pointer text-gray-600 hover:text-black"
                           onClick={() =>
                             setProductQuantity((qty) =>
                               qty < productStock ? qty + 1 : qty
@@ -253,10 +253,10 @@ const Product = () => {
                       </div>
 
                       {product.stock - productQuantity > 0 && (
-                        <div className="text-sm font-semibold text-gray-600">
+                        <div className="text-sm font-medium text-gray-600">
                           <span>
                             Only{" "}
-                            <span className="text-[#D4AF37] font-bold">
+                            <span className="text-black font-medium">
                               {product.stock - productQuantity} items{" "}
                             </span>
                             left!
@@ -268,7 +268,7 @@ const Product = () => {
 
                   {/* Pincode Check */}
                   <div>
-                    <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+                    <h3 className="font-medium text-lg mb-3 flex items-center gap-2 text-black">
                       <MapPin className="h-5 w-5" />
                       Check Availability
                     </h3>
@@ -276,17 +276,17 @@ const Product = () => {
                       <Input
                         placeholder="Enter your pincode"
                         onChange={(e) => setPincode(e.target.value)}
-                        className="flex-1 border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="flex-1 border-gray-200 focus:border-black focus:ring-black"
                       />
                       <Button 
                         onClick={checkAvailability}
-                        className="bg-[#D4AF37] hover:bg-[#bfa133]"
+                        className="bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
                       >
                         Check
                       </Button>
                     </div>
                     {availabilityMessage && (
-                      <p className="text-sm mt-2 text-gray-600">{availabilityMessage}</p>
+                      <p className="text-sm mt-2 text-gray-600 font-light">{availabilityMessage}</p>
                     )}
                   </div>
 
@@ -294,7 +294,7 @@ const Product = () => {
                   <div className="flex gap-3 pt-4">
                     <Button 
                       onClick={() => setPurchaseProduct(true)}
-                      className="flex-1 bg-[#D4AF37] hover:bg-[#bfa133] text-white font-semibold"
+                      className="flex-1 bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
                     >
                       <CreditCard className="h-4 w-4 mr-2" />
                       Buy Now
@@ -302,7 +302,7 @@ const Product = () => {
                     <Button 
                       variant="outline" 
                       onClick={handleAddToCart}
-                      className="flex-1 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white"
+                      className="flex-1 border-black text-black hover:bg-black hover:text-white transition-all duration-300"
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
@@ -312,15 +312,15 @@ const Product = () => {
                   {/* Buy Now Address Input */}
                   {purchaseProduct && (
                     <div className="space-y-3 pt-4 border-t border-gray-200">
-                      <h3 className="font-bold text-lg">Shipping Address</h3>
+                      <h3 className="font-medium text-lg text-black">Shipping Address</h3>
                       <Input
                         placeholder="Enter your complete shipping address..."
                         onChange={(e) => setAddress(e.target.value)}
-                        className="border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="border-gray-200 focus:border-black focus:ring-black"
                       />
                       <Button 
                         onClick={handleBuyNow}
-                        className="w-full bg-[#D4AF37] hover:bg-[#bfa133] text-white font-semibold"
+                        className="w-full bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
                       >
                         Confirm Order
                       </Button>
@@ -331,10 +331,10 @@ const Product = () => {
             </Card>
 
             {/* Reviews Section */}
-            <Card className="shadow-lg border-0 bg-white">
-              <CardHeader className="bg-gradient-to-r from-[#D4AF37] to-[#edcf5d] text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <Star className="h-5 w-5" />
+            <Card className="shadow-lg border border-gray-200 bg-white">
+              <CardHeader className="bg-white border-b border-gray-200">
+                <CardTitle className="flex items-center gap-2 text-black font-light">
+                  <Star className="h-5 w-5 text-black" />
                   Customer Reviews
                 </CardTitle>
               </CardHeader>

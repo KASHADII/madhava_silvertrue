@@ -172,21 +172,21 @@ const Footer = () => {
       </div>
 
       {/* Bottom Footer */}
-      <div className="bg-black text-white py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-sm">
-                © 2024 Madhava Silver. All rights reserved. | 
-                <a href="#" className="hover:text-[#C0C0C0] transition-colors ml-1">Privacy Policy</a> | 
-                <a href="#" className="hover:text-[#C0C0C0] transition-colors ml-1">Terms of Service</a>
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm">Made with</span>
-              <Heart className="h-4 w-4 text-[#C0C0C0]" />
-              <span className="text-sm">in India</span>
-            </div>
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="text-center md:text-left mb-4 md:mb-0">
+            <p className="text-xs text-gray-500">
+              © 2024 Madhava Silver. All rights reserved.
+              <span className="mx-2">|</span>
+              <a href="#" className="hover:text-[#D4AF37] transition-colors">Privacy Policy</a>
+              <span className="mx-2">|</span>
+              <a href="#" className="hover:text-[#D4AF37] transition-colors">Terms of Service</a>
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">Made with</span>
+            <Heart className="h-3 w-3 text-[#D4AF37]" />
+            <span className="text-xs text-gray-500">in India</span>
           </div>
         </div>
       </div>

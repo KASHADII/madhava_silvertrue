@@ -51,21 +51,21 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fffbe6] to-[#fff] py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[#D4AF37] mb-2">Checkout</h1>
-          <p className="text-gray-600">Complete your purchase</p>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-light text-black mb-4">Checkout</h1>
+          <p className="text-gray-600 font-light">Complete your purchase</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Order Summary */}
           <div className="lg:col-span-2">
-            <Card className="shadow-lg border-0 bg-white">
-              <CardHeader className="bg-gradient-to-r from-[#D4AF37] to-[#edcf5d] text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <ShoppingBag className="h-5 w-5" />
+            <Card className="shadow-lg border border-gray-200 bg-white">
+              <CardHeader className="bg-white border-b border-gray-200">
+                <CardTitle className="flex items-center gap-2 text-black font-light">
+                  <ShoppingBag className="h-5 w-5 text-black" />
                   Order Summary
                 </CardTitle>
               </CardHeader>
@@ -73,15 +73,15 @@ const Checkout = () => {
                 {cartItems.length === 0 ? (
                   <div className="text-center py-12">
                     <ShoppingBag className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                    <h2 className="text-xl font-semibold text-gray-500 mb-2">
+                    <h2 className="text-xl font-light text-gray-500 mb-2">
                       Your cart is empty
                     </h2>
-                    <p className="text-gray-400 mb-4">
+                    <p className="text-gray-400 font-light mb-6">
                       Add some products to continue with checkout
                     </p>
                     <Button 
                       onClick={() => navigate('/catalogue')}
-                      className="bg-[#D4AF37] hover:bg-[#bfa133]"
+                      className="bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
                     >
                       Browse Products
                     </Button>
@@ -98,27 +98,27 @@ const Checkout = () => {
 
             {/* Order Details */}
             {cartItems.length > 0 && (
-              <Card className="mt-6 shadow-lg border-0 bg-white">
-                <CardHeader>
-                  <CardTitle className="text-[#D4AF37]">Order Details</CardTitle>
+              <Card className="shadow-lg border border-gray-200 bg-white mt-8">
+                <CardHeader className="bg-white border-b border-gray-200">
+                  <CardTitle className="flex items-center gap-2 text-black font-light">
+                    <MapPin className="h-5 w-5 text-black" />
+                    Shipping Address
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Subtotal ({totalQuantity} items)</span>
-                      <span className="font-semibold">₹{totalPrice?.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Tax</span>
-                      <span className="font-semibold">₹0.00</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Shipping</span>
-                      <span className="font-semibold text-green-600">Free</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 bg-gray-50 rounded-lg px-4">
-                      <span className="text-lg font-bold text-[#D4AF37]">Total</span>
-                      <span className="text-lg font-bold text-[#D4AF37]">₹{totalPrice?.toFixed(2)}</span>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="address" className="text-sm font-medium text-gray-700">
+                        Delivery Address
+                      </Label>
+                      <Textarea
+                        id="address"
+                        placeholder="Enter your complete delivery address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="mt-2 border-gray-200 focus:border-black focus:ring-black"
+                        rows={4}
+                      />
                     </div>
                   </div>
                 </CardContent>
@@ -126,73 +126,45 @@ const Checkout = () => {
             )}
           </div>
 
-          {/* Billing Information */}
+          {/* Order Total */}
           <div className="lg:col-span-1">
-            <Card className="shadow-lg border-0 bg-white sticky top-8">
-              <CardHeader className="bg-gradient-to-r from-[#D4AF37] to-[#edcf5d] text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Billing Information
+            <Card className="shadow-lg border border-gray-200 bg-white">
+              <CardHeader className="bg-white border-b border-gray-200">
+                <CardTitle className="flex items-center gap-2 text-black font-light">
+                  <CreditCard className="h-5 w-5 text-black" />
+                  Order Total
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <User className="h-4 w-4" />
-                      Full Name
-                    </Label>
-                    <Input
-                      id="name"
-                      placeholder="John Doe"
-                      className="mt-1 border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-                      value={user?.name}
-                      disabled
-                    />
+                {cartItems.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500 font-light">No items in cart</p>
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <Mail className="h-4 w-4" />
-                      Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john.doe@example.com"
-                      className="mt-1 border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37]"
-                      value={user?.email}
-                      disabled
-                    />
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-light">Items ({totalQuantity})</span>
+                      <span className="text-black font-medium">₹{totalPrice}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-light">Shipping</span>
+                      <span className="text-black font-medium">Free</span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg font-medium text-black">Total</span>
+                        <span className="text-lg font-medium text-black">₹{totalPrice}</span>
+                      </div>
+                    </div>
+                    <Button 
+                      onClick={handleCheckout}
+                      className="w-full bg-black text-white font-medium tracking-wide hover:bg-gray-800 transition-all duration-300"
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed to Payment
+                    </Button>
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="address" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <MapPin className="h-4 w-4" />
-                      Shipping Address
-                    </Label>
-                    <Textarea
-                      rows="4"
-                      id="address"
-                      placeholder="Enter your complete shipping address..."
-                      className="mt-1 border-gray-200 focus:border-[#D4AF37] focus:ring-[#D4AF37] resize-none"
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                  </div>
-                  
-                  <Button 
-                    onClick={handleCheckout} 
-                    className="w-full bg-[#D4AF37] hover:bg-[#bfa133] text-white font-semibold py-3 text-lg shadow-lg"
-                    disabled={cartItems.length === 0}
-                  >
-                    <CreditCard className="h-5 w-5 mr-2" />
-                    Place Order - ₹{totalPrice?.toFixed(2)}
-                  </Button>
-                  
-                  <p className="text-xs text-gray-500 text-center">
-                    By placing your order, you agree to our terms and conditions
-                  </p>
-                </div>
+                )}
               </CardContent>
             </Card>
           </div>
