@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { Edit, Search, Trash2 } from "lucide-react";
+import { Edit, Search, Trash2, X, Upload } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -46,6 +46,8 @@ const AllProducts = () => {
   const [deletingProduct, setDeletingProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [removedImages, setRemovedImages] = useState([]);
 
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -199,6 +201,8 @@ const AllProducts = () => {
   const handleEdit = (product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
+    setNewImages([]); // Clear new images when opening edit modal
+    setRemovedImages([]); // Clear removed images when opening edit modal
   };
 
   const handleDelete = (product) => {
@@ -206,28 +210,45 @@ const AllProducts = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImages(prev => [...prev, ...files]);
+  };
+
+  const removeNewImage = (index) => {
+    setNewImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExistingImage = (id) => {
+    setRemovedImages(prev => [...prev, id]);
+  };
+
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const updatedProduct = {
-      ...editingProduct,
-      name: formData.get("name"),
-      description: formData.get("description"),
-      price: parseFloat(formData.get("price")),
-      category: formData.get("category"),
-    };
+    const formData = new FormData();
+    
+    formData.append("name", e.target.name.value);
+    formData.append("description", e.target.description.value);
+    formData.append("price", e.target.price.value);
+    formData.append("category", e.target.category.value);
+    
+    // Add new images
+    newImages.forEach((image) => {
+      formData.append("newImages", image);
+    });
+    
+    // Add removed image IDs as JSON string
+    if (removedImages.length > 0) {
+      formData.append("removedImages", JSON.stringify(removedImages));
+    }
 
     try {
       const res = await axios.put(
         import.meta.env.VITE_API_URL + `/products/update-product/${editingProduct._id}`,
-        {
-          name: updatedProduct.name,
-          description: updatedProduct.description,
-          price: updatedProduct.price,
-          category: updatedProduct.category,
-        },
+        formData,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
@@ -248,6 +269,8 @@ const AllProducts = () => {
 
     setIsEditModalOpen(false);
     setEditingProduct(null);
+    setNewImages([]);
+    setRemovedImages([]);
   };
 
   return (
@@ -370,7 +393,7 @@ const AllProducts = () => {
       )}
 
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
           </DialogHeader>
@@ -421,6 +444,76 @@ const AllProducts = () => {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Current Images Section */}
+              <div className="grid gap-4 items-center">
+                <Label>Current Images</Label>
+                <div className="grid grid-cols-3 gap-4">
+                  {editingProduct?.images?.map((image, index) => (
+                    !removedImages.includes(image.id) && (
+                      <div key={image.id} className="relative group">
+                        <img
+                          src={image.url}
+                          alt={`Product ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeExistingImage(image.id)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    )
+                  ))}
+                </div>
+              </div>
+
+              {/* New Images Upload Section */}
+              <div className="grid gap-4 items-center">
+                <Label htmlFor="newImages">Add New Images</Label>
+                <div className="flex items-center gap-4">
+                  <Input
+                    id="newImages"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => document.getElementById('newImages').click()}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload
+                  </Button>
+                </div>
+                
+                {/* Preview New Images */}
+                {newImages.length > 0 && (
+                  <div className="grid grid-cols-3 gap-4">
+                    {newImages.map((image, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`New ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeNewImage(index)}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter>

@@ -10,6 +10,7 @@ import {
   Settings,
   Tag,
   Percent,
+  List,
 } from "lucide-react";
 
 import {
@@ -40,6 +41,11 @@ const items = [
     title: "All Products",
     url: "/admin/dashboard/all-products",
     icon: GalleryVerticalEnd,
+  },
+  {
+    title: "Product List",
+    url: "/admin/dashboard/product-list",
+    icon: List,
   },
   {
     title: "Categories",

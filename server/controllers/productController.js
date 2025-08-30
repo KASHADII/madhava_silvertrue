@@ -54,15 +54,60 @@ const updateProduct = async (req, res) => {
   }
 
   try {
-    const { ...data } = req.body;
     const { id } = req.params;
+    const { name, description, price, category } = req.body;
+    const newImages = req.files || [];
+    const removedImages = req.body.removedImages ? JSON.parse(req.body.removedImages) : [];
 
-    const product = await Product.findByIdAndUpdate(id, data, { new: true });
+    // Find the existing product
+    const existingProduct = await Product.findById(id);
+    if (!existingProduct) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
 
-    if (!product)
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
+    // Handle new image uploads
+    const uploadedImages = [];
+    if (newImages.length > 0) {
+      for (const file of newImages) {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "products",
+        });
+        uploadedImages.push({
+          url: result.secure_url,
+          id: result.public_id,
+        });
+      }
+    }
+
+    // Handle image removal from Cloudinary
+    if (removedImages.length > 0) {
+      for (const imageId of removedImages) {
+        try {
+          await cloudinary.uploader.destroy(imageId);
+        } catch (cloudinaryError) {
+          console.error("Error deleting image from Cloudinary:", cloudinaryError);
+        }
+      }
+    }
+
+    // Filter out removed images from existing images
+    const filteredExistingImages = existingProduct.images.filter(
+      (image) => !removedImages.includes(image.id)
+    );
+
+    // Combine filtered existing images with new uploaded images
+    const updatedImages = [...filteredExistingImages, ...uploadedImages];
+
+    // Update product data
+    const updateData = {
+      name: name || existingProduct.name,
+      description: description || existingProduct.description,
+      price: price ? parseFloat(price) : existingProduct.price,
+      category: category || existingProduct.category,
+      images: updatedImages,
+    };
+
+    const product = await Product.findByIdAndUpdate(id, updateData, { new: true });
 
     return res.status(200).json({
       success: true,

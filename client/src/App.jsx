@@ -26,6 +26,7 @@ import ProtectedRoute from "./components/custom/ProtectedRoute";
 import Catalogue from "./pages/Catalogue";
 import About from "./pages/About";
 import Discounts from "./components/custom/Discounts";
+import ProductList from "./components/custom/ProductList";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -94,6 +95,14 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <AdminLayout children={<AllProducts />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/product-list",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<ProductList />} />
         </ProtectedRoute>
       ),
     },

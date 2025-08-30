@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import ProductList from "@/components/custom/ProductList";
+import React, { useEffect, useState } from "react";
+import ProductCard from "@/components/custom/ProductCard";
 import FilterMenu from "@/components/custom/FilterMenu";
 import ErrorBoundary from "@/components/custom/ErrorBoundary";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "@/redux/slices/productSlice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, Filter } from "lucide-react";
@@ -10,15 +10,20 @@ import axios from "axios";
 
 const Catalogue = () => {
   const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.product);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(import.meta.env.VITE_API_URL + "/products/get-products?category=all");
         dispatch(setProducts(res.data.data || []));
       } catch (error) {
         console.error("Error fetching products:", error);
         dispatch(setProducts([]));
+      } finally {
+        setLoading(false);
       }
     };
     getProducts();
@@ -63,7 +68,25 @@ const Catalogue = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <ProductList />
+              {loading ? (
+                <div className="flex justify-center items-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+                </div>
+              ) : products && products.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {products.map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      {...product}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 text-lg">No products found</p>
+                  <p className="text-gray-400 text-sm">Try adjusting your filters or search terms</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
