@@ -28,10 +28,10 @@ const AdminLogin = () => {
     }
 
     try {
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/admin-login",
-        { username, password }
-      );
+              const res = await axios.post(
+          import.meta.env.VITE_API_URL + "/auth/admin-login",
+          { username, password }
+        );
       const data = await res.data;
       dispatch(setUserLogin(data));
       toast({

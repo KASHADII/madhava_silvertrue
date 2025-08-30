@@ -26,7 +26,7 @@ const Signup = () => {
       return;
     }
     try {
-      const res = await axios.post(import.meta.env.VITE_API_URL + "/signup", {
+      const res = await axios.post(import.meta.env.VITE_API_URL + "/auth/signup", {
         name: name.value,
         phone: phone.value,
         email: email.value,

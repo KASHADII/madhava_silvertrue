@@ -56,7 +56,7 @@ const AllProducts = () => {
     try {
       const res = await axios.get(
         import.meta.env.VITE_API_URL +
-          `/get-products?category=${category}&search=${searchTerm}`,
+          `/products/get-products?category=${category}&search=${searchTerm}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -106,7 +106,7 @@ const AllProducts = () => {
   const removeFromBlacklist = async (id) => {
     try {
       const res = await axios.put(
-        import.meta.env.VITE_API_URL + `/remove-from-blacklist/${id}`,
+        import.meta.env.VITE_API_URL + `/products/remove-from-blacklist/${id}`,
         null,
         {
           headers: {
@@ -132,7 +132,7 @@ const AllProducts = () => {
   const blacklistProduct = async (id) => {
     try {
       const res = await axios.put(
-        import.meta.env.VITE_API_URL + `/blacklist-product/${id}`,
+        import.meta.env.VITE_API_URL + `/products/blacklist-product/${id}`,
         null,
         {
           headers: {
@@ -170,7 +170,7 @@ const AllProducts = () => {
     
     try {
       const res = await axios.delete(
-        import.meta.env.VITE_API_URL + `/delete-product/${deletingProduct._id}`,
+        import.meta.env.VITE_API_URL + `/products/delete-product/${deletingProduct._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -219,7 +219,7 @@ const AllProducts = () => {
 
     try {
       const res = await axios.put(
-        import.meta.env.VITE_API_URL + `/update-product/${editingProduct._id}`,
+        import.meta.env.VITE_API_URL + `/products/update-product/${editingProduct._id}`,
         {
           name: updatedProduct.name,
           description: updatedProduct.description,

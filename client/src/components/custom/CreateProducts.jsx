@@ -135,7 +135,7 @@ const CreateProducts = () => {
 
     try {
       const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/create-product",
+        import.meta.env.VITE_API_URL + "/products/create-product",
         formData,
         {
           headers: {

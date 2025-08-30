@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
   res.send(`<center><h1>Server Running on PORT : ${port} </h1></center>`);
 });
 
-// dynamically include routes
+// Mount API routes at /api prefix
 app.use("/api", routes);
 
 // listen to port

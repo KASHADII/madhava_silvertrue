@@ -9,7 +9,7 @@ const useRazorpay = () => {
   const generatePayment = async (amount) => {
     try {
       const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/generate-payment",
+        import.meta.env.VITE_API_URL + "/payments/generate-payment",
         { amount },
         {
           headers: {
@@ -60,7 +60,7 @@ const useRazorpay = () => {
       handler: async (response) => {
         try {
           const res = await axios.post(
-            import.meta.env.VITE_API_URL + "/verify-payment",
+            import.meta.env.VITE_API_URL + "/payments/verify-payment",
             {
               razorpay_order_id: options.id,
               razorpay_payment_id: response.razorpay_payment_id,

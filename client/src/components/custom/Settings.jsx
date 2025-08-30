@@ -25,7 +25,7 @@ const Settings = () => {
 
     try {
       const res = await axios.put(
-        import.meta.env.VITE_API_URL + "/change-username",
+        import.meta.env.VITE_API_URL + "/settings/change-username",
         {
           previousUsername,
           newUsername,
@@ -67,7 +67,7 @@ const Settings = () => {
 
     try {
       const res = await axios.put(
-        import.meta.env.VITE_API_URL + "/change-password",
+        import.meta.env.VITE_API_URL + "/settings/change-password",
         {
           username: JSON.parse(localStorage.getItem("user")).username,
           previousPassword,
