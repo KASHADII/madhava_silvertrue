@@ -167,23 +167,17 @@ const Discounts = () => {
     userId: "",
     cartValue: "",
     cartItems: [],
+    mockMode: true, // Enable mock mode by default
   });
   const [applyResult, setApplyResult] = useState(null);
-  const handleApplyDiscount = async () => {
-    try {
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/discounts/apply",
-        {
-          ...applyInput,
-          cartValue: Number(applyInput.cartValue),
-          cartItems: applyInput.cartItems,
-        }
-      );
-      setApplyResult(res.data);
-    } catch (error) {
-      setApplyResult({ success: false, message: error.response?.data?.message || "Failed to apply discount" });
-    }
-  };
+
+  // Helper for cart items multi-select rendering
+  const renderCartItemsMultiSelect = (items, onChange) => (
+    <div className="space-y-2">
+      <label className="text-sm font-medium">Cart Items (Product IDs, comma separated)</label>
+      <Input value={items.map(i => i.productId).join(",")} onChange={e => onChange(e.target.value.split(",").map(v => v.trim()).filter(Boolean).map(pid => ({ productId: pid })))} />
+    </div>
+  );
 
   // Helper for multi-select rendering
   const renderMultiSelect = (options, selected, onChange, labelKey = "name", valueKey = "_id") => (
@@ -201,6 +195,22 @@ const Discounts = () => {
       ))}
     </div>
   );
+
+  const handleApplyDiscount = async () => {
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/discounts/apply",
+        {
+          ...applyInput,
+          cartValue: Number(applyInput.cartValue),
+          cartItems: applyInput.cartItems,
+        }
+      );
+      setApplyResult(res.data);
+    } catch (error) {
+      setApplyResult({ success: false, message: error.response?.data?.message || "Failed to apply discount" });
+    }
+  };
 
   return (
     <div className="p-6">
