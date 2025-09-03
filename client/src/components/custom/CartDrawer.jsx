@@ -15,14 +15,14 @@ import { useSelector } from "react-redux";
 import CartProduct from "./CartProduct";
 import LinkButton from "./LinkButton";
 
-const CartDrawer = () => {
+const CartDrawer = ({ showLabel = false }) => {
   const { cartItems, totalQuantity, totalPrice } = useSelector(
     (state) => state.cart
   );
 
   return (
     <Drawer>
-      <DrawerTrigger className="relative">
+      <DrawerTrigger className="relative flex items-center gap-2">
         {totalQuantity > 0 && (
           <Badge className={`absolute px-1 py-0`}>{totalQuantity}</Badge>
         )}
@@ -31,6 +31,9 @@ const CartDrawer = () => {
           strokeWidth={1.3}
           size={28}
         />
+        {showLabel && (
+          <span className="uppercase tracking-wide hidden sm:inline">Cart</span>
+        )}
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
