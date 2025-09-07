@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 function validateDiscountInput(body) {
   const errors = [];
   if (!body.code) errors.push("Discount code is required");
+  if (!body.description) errors.push("Discount description is required");
   if (!body.type || !["flat", "percentage", "free_shipping"].includes(body.type)) errors.push("Invalid discount type");
   if (["flat", "percentage"].includes(body.type) && (body.value === undefined || body.value === null)) errors.push("Discount value is required");
   if (!body.startDate) errors.push("Start date is required");
@@ -18,6 +19,19 @@ function validateDiscountInput(body) {
   return errors;
 }
 
+// Helper: Process eligibleUsers field
+function processEligibleUsers(eligibleUsers) {
+  if (!eligibleUsers) return [];
+  if (typeof eligibleUsers === 'string') {
+    if (eligibleUsers.trim() === '') return [];
+    return eligibleUsers.split(',').map(user => user.trim()).filter(user => user !== '');
+  }
+  if (Array.isArray(eligibleUsers)) {
+    return eligibleUsers.filter(user => user !== '');
+  }
+  return [];
+}
+
 // Create a new discount
 const createDiscount = async (req, res) => {
   try {
@@ -25,7 +39,14 @@ const createDiscount = async (req, res) => {
     if (errors.length) return res.status(400).json({ success: false, errors });
     const exists = await Discount.findOne({ code: req.body.code });
     if (exists) return res.status(400).json({ success: false, message: "Discount code already exists" });
-    const discount = new Discount(req.body);
+    
+    // Process the request body
+    const discountData = {
+      ...req.body,
+      eligibleUsers: processEligibleUsers(req.body.eligibleUsers)
+    };
+    
+    const discount = new Discount(discountData);
     await discount.save();
     res.status(201).json({ success: true, message: "Discount created", data: discount });
   } catch (err) {
@@ -59,7 +80,14 @@ const updateDiscount = async (req, res) => {
   try {
     const errors = validateDiscountInput({ ...req.body, code: "dummy", type: req.body.type || "flat" }); // code not required for update
     if (errors.length) return res.status(400).json({ success: false, errors });
-    const discount = await Discount.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    
+    // Process the request body
+    const updateData = {
+      ...req.body,
+      eligibleUsers: processEligibleUsers(req.body.eligibleUsers)
+    };
+    
+    const discount = await Discount.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!discount) return res.status(404).json({ success: false, message: "Discount not found" });
     res.json({ success: true, message: "Discount updated", data: discount });
   } catch (err) {
@@ -190,6 +218,50 @@ const applyDiscount = async (req, res) => {
   }
 };
 
+// Get available discounts for customers
+const getAvailableDiscounts = async (req, res) => {
+  try {
+    const now = new Date();
+    console.log("Fetching available discounts at:", now);
+    
+    // First, let's get all active discounts and filter manually to handle date string issues
+    const allActiveDiscounts = await Discount.find({
+      status: "active"
+    }).select('code description type value minOrderValue maxDiscountCap startDate endDate applicableCategories usageLimit')
+      .sort({ createdAt: -1 });
+
+    console.log("All active discounts:", allActiveDiscounts.length);
+
+    // Filter by date manually
+    const discounts = allActiveDiscounts.filter(discount => {
+      const startDate = new Date(discount.startDate);
+      const endDate = new Date(discount.endDate);
+      const isWithinDateRange = startDate <= now && endDate >= now;
+      console.log(`Discount ${discount.code}: start=${startDate}, end=${endDate}, now=${now}, valid=${isWithinDateRange}`);
+      return isWithinDateRange;
+    });
+
+    console.log("Found discounts:", discounts.length);
+
+    // Filter out discounts that have reached usage limits
+    const availableDiscounts = [];
+    for (const discount of discounts) {
+      if (discount.usageLimit) {
+        const totalUsage = await DiscountUsageLog.countDocuments({ discountCode: discount.code });
+        console.log(`Discount ${discount.code}: ${totalUsage}/${discount.usageLimit} usage`);
+        if (totalUsage >= discount.usageLimit) continue;
+      }
+      availableDiscounts.push(discount);
+    }
+
+    console.log("Available discounts after filtering:", availableDiscounts.length);
+    res.json({ success: true, data: availableDiscounts });
+  } catch (err) {
+    console.error("Error fetching available discounts:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   createDiscount,
   getAllDiscounts,
@@ -197,4 +269,5 @@ module.exports = {
   updateDiscount,
   deleteDiscount,
   applyDiscount,
+  getAvailableDiscounts,
 }; 

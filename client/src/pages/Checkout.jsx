@@ -1,4 +1,5 @@
 import CheckoutProduct from "@/components/custom/CheckoutProduct";
+import AvailableDiscounts from "@/components/custom/AvailableDiscounts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,15 +8,18 @@ import { Textarea } from "@/components/ui/textarea";
 import useErrorLogout from "@/hooks/use-error-logout";
 import useRazorpay from "@/hooks/use-razorpay";
 import { useToast } from "@/hooks/use-toast";
-import { emptyCart } from "@/redux/slices/cartSlice";
+import { emptyCart, applyDiscount, removeDiscount } from "@/redux/slices/cartSlice";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ShoppingBag, CreditCard, MapPin, User, Mail } from "lucide-react";
+import { ShoppingBag, CreditCard, MapPin, User, Mail, Tag, X } from "lucide-react";
+import axios from "axios";
 
 const Checkout = () => {
   const [address, setAddress] = useState("");
-  const { cartItems, totalQuantity, totalPrice } = useSelector(
+  const [discountCode, setDiscountCode] = useState("");
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
+  const { cartItems, totalQuantity, totalPrice, appliedDiscount, discountAmount, finalPrice } = useSelector(
     (state) => state.cart
   );
   const { user } = useSelector((state) => state.auth);
@@ -24,6 +28,73 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const { handleErrorLogout } = useErrorLogout();
   const { generatePayment, verifyPayment } = useRazorpay();
+
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) {
+      toast({
+        title: "Please enter a discount code",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setApplyingDiscount(true);
+    try {
+      const cartItemsForAPI = cartItems.map(item => ({
+        productId: item._id,
+        category: item.category,
+        quantity: item.quantity
+      }));
+
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL + "/discounts/apply",
+        {
+          code: discountCode.trim(),
+          userId: user._id,
+          cartValue: totalPrice,
+          cartItems: cartItemsForAPI,
+          mockMode: false
+        }
+      );
+
+      if (response.data.success) {
+        dispatch(applyDiscount({
+          discount: {
+            code: discountCode.trim(),
+            type: response.data.type
+          },
+          discountAmount: response.data.discountAmount
+        }));
+        
+        toast({
+          title: "Discount Applied!",
+          description: `You saved ₹${response.data.discountAmount}`,
+        });
+        setDiscountCode("");
+      }
+    } catch (error) {
+      toast({
+        title: "Discount Error",
+        description: error.response?.data?.message || "Failed to apply discount code",
+        variant: "destructive",
+      });
+    } finally {
+      setApplyingDiscount(false);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    dispatch(removeDiscount());
+    toast({
+      title: "Discount Removed",
+      description: "Discount code has been removed",
+    });
+  };
+
+  const handleApplyDiscountFromList = (code) => {
+    setDiscountCode(code);
+    handleApplyDiscount();
+  };
 
   const handleCheckout = async () => {
     if (address.trim() === "") {
@@ -42,7 +113,7 @@ const Checkout = () => {
     });
 
     try {
-      const options = await generatePayment(totalPrice);
+      const options = await generatePayment(finalPrice);
       const success = verifyPayment(options, productArray, address);
       dispatch(emptyCart());
     } catch (error) {
@@ -124,6 +195,86 @@ const Checkout = () => {
                 </CardContent>
               </Card>
             )}
+
+            {/* Discount Code Section */}
+            {cartItems.length > 0 && (
+              <Card className="shadow-lg border border-gray-200 bg-white mt-8">
+                <CardHeader className="bg-white border-b border-gray-200">
+                  <CardTitle className="flex items-center gap-2 text-black font-light">
+                    <Tag className="h-5 w-5 text-black" />
+                    Discount Code
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {appliedDiscount ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <Tag className="h-4 w-4 text-green-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-green-800">
+                              {appliedDiscount.code} applied
+                            </p>
+                            <p className="text-sm text-green-600">
+                              You saved ₹{discountAmount}
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleRemoveDiscount}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex gap-3">
+                        <Input
+                          placeholder="Enter discount code"
+                          value={discountCode}
+                          onChange={(e) => setDiscountCode(e.target.value)}
+                          className="flex-1 border-gray-200 focus:border-black focus:ring-black"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleApplyDiscount();
+                            }
+                          }}
+                        />
+                        <Button
+                          onClick={handleApplyDiscount}
+                          disabled={applyingDiscount || !discountCode.trim()}
+                          className="bg-black text-white hover:bg-gray-800"
+                        >
+                          {applyingDiscount ? "Applying..." : "Apply"}
+                        </Button>
+                      </div>
+                      <p className="text-sm text-gray-500">
+                        Enter your discount code to save on your order
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Available Discounts Section */}
+            {cartItems.length > 0 && (
+              <div className="mt-8">
+                <AvailableDiscounts 
+                  onApplyDiscount={handleApplyDiscountFromList}
+                  appliedDiscountCode={appliedDiscount?.code}
+                  cartValue={totalPrice}
+                />
+                
+              </div>
+            )}
           </div>
 
           {/* Order Total */}
@@ -150,10 +301,16 @@ const Checkout = () => {
                       <span className="text-gray-600 font-light">Shipping</span>
                       <span className="text-black font-medium">Free</span>
                     </div>
+                    {appliedDiscount && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600 font-light">Discount ({appliedDiscount.code})</span>
+                        <span className="text-green-600 font-medium">-₹{discountAmount}</span>
+                      </div>
+                    )}
                     <div className="border-t border-gray-200 pt-4">
                       <div className="flex justify-between items-center">
                         <span className="text-lg font-medium text-black">Total</span>
-                        <span className="text-lg font-medium text-black">₹{totalPrice}</span>
+                        <span className="text-lg font-medium text-black">₹{finalPrice}</span>
                       </div>
                     </div>
                     <Button 

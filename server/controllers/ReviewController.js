@@ -19,7 +19,7 @@ const createReview = async (req, res) => {
       rating,
     });
 
-    newReview.populate("userId", "name");
+    await newReview.populate("userId", "name");
 
     let product = await Product.findByIdAndUpdate(productId, {
       $push: { reviews: newReview._id },

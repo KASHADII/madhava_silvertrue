@@ -4,7 +4,7 @@ const replySchema = new mongoose.Schema(
   {
     review: {
       type: String,
-      reqired: true,
+      required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

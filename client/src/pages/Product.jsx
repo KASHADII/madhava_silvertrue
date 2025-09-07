@@ -1,4 +1,5 @@
 import ReviewsComponent from "@/components/custom/ReviewsComponent";
+import StarRating from "@/components/custom/StarRating";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -196,9 +197,14 @@ const Product = () => {
                     <h2 className="text-3xl font-light text-black mb-2">{product?.name}</h2>
                     <p className="text-gray-600 font-light">{product?.description}</p>
                     <div className="flex items-center mt-3">
-                      {starsGenerator(product.rating, "0", 15)}
+                      <StarRating
+                        rating={product.rating || 0}
+                        size="md"
+                        interactive={false}
+                        showLabel={false}
+                      />
                       <span className="text-md ml-2 text-gray-600 font-light">
-                        ({product?.reviews?.length} reviews)
+                        ({product?.reviews?.length || 0} reviews)
                       </span>
                     </div>
                   </div>
@@ -338,8 +344,10 @@ const Product = () => {
                   Customer Reviews
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                {product?._id && <ReviewsComponent productId={product._id}/>}
+              <CardContent className="p-0">
+                <div className="p-6">
+                  {product?._id && <ReviewsComponent productId={product._id}/>}
+                </div>
               </CardContent>
             </Card>
           </div>

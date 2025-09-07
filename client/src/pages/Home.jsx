@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "@/components/custom/ProductCard";
+import BestSellers from "@/components/custom/BestSellers";
 import axios from "axios";
 import { ChevronRight, ArrowRight, Play } from "lucide-react";
 
@@ -183,6 +184,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Best Sellers Section */}
+      <BestSellers />
 
       {/* New Arrivals Section */}
       <section className="py-20 bg-gray-50">

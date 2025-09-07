@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Edit, Search, Trash2, Eye, Upload, X, Image as ImageIcon } from "lucide-react";
+import { Edit, Search, Trash2, Eye, Upload, X, Image as ImageIcon, Star, StarOff } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -211,6 +211,32 @@ const ProductList = () => {
     setRemovedImages([]);
   };
 
+  const toggleBestSeller = async (product) => {
+    try {
+      const res = await axios.put(
+        import.meta.env.VITE_API_URL + `/products/toggle-best-seller/${product._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const { message } = res.data;
+
+      toast({
+        title: "Success",
+        description: message,
+      });
+      
+      // Refresh the products list
+      fetchProducts();
+    } catch (error) {
+      handleErrorLogout(error, "Error occurred while updating best seller status");
+    }
+  };
+
   return (
     <div className="mx-auto px-4 sm:px-8">
       <h1 className="text-3xl font-bold mb-8">Product List</h1>
@@ -282,6 +308,7 @@ const ProductList = () => {
                 <TableHead>Category</TableHead>
                 <TableHead>Stock</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Best Seller</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -305,6 +332,26 @@ const ProductList = () => {
                         Active
                       </span>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant={product.bestSeller ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => toggleBestSeller(product)}
+                      className={product.bestSeller ? "bg-yellow-500 hover:bg-yellow-600 text-white" : ""}
+                    >
+                      {product.bestSeller ? (
+                        <>
+                          <Star className="h-4 w-4 mr-1" />
+                          Pinned
+                        </>
+                      ) : (
+                        <>
+                          <StarOff className="h-4 w-4 mr-1" />
+                          Pin
+                        </>
+                      )}
+                    </Button>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">

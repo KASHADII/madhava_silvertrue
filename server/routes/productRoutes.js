@@ -7,6 +7,8 @@ const {
   getProductByName,
   blacklistProduct,
   removeFromBlacklist,
+  toggleBestSeller,
+  getBestSellers,
 } = require("../controllers/productController");
 const verifyToken = require("../middlewares/verifyToken");
 const upload = require("../middlewares/multer");
@@ -29,5 +31,9 @@ router.get("/get-product-by-name/:name", getProductByName);
 router.put("/blacklist-product/:id", verifyToken, blacklistProduct);
 
 router.put("/remove-from-blacklist/:id", verifyToken, removeFromBlacklist);
+
+router.put("/toggle-best-seller/:id", verifyToken, toggleBestSeller);
+
+router.get("/get-best-sellers", getBestSellers);
 
 module.exports = router;

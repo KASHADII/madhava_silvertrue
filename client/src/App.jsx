@@ -26,6 +26,8 @@ import ProtectedRoute from "./components/custom/ProtectedRoute";
 import Catalogue from "./pages/Catalogue";
 import About from "./pages/About";
 import Discounts from "./components/custom/Discounts";
+import DiscountForm from "./pages/DiscountForm";
+import DiscountProductSelection from "./pages/DiscountProductSelection";
 import ProductList from "./components/custom/ProductList";
 
 export default function App() {
@@ -143,6 +145,38 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <AdminLayout children={<Discounts />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/discounts/create",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<DiscountForm />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/discounts/edit",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<DiscountForm />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/discounts/create/products",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<DiscountProductSelection />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/admin/dashboard/discounts/edit/products",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<DiscountProductSelection />} />
         </ProtectedRoute>
       ),
     },

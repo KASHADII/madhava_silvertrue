@@ -325,6 +325,65 @@ const removeFromBlacklist = async (req, res) => {
   }
 };
 
+const toggleBestSeller = async (req, res) => {
+  if (req.role !== ROLES.admin) {
+    return res.status(401).json({ success: false, message: "Access denied" });
+  }
+
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Check if we're trying to set as best seller
+    const newBestSellerStatus = !product.bestSeller;
+    
+    // If setting as best seller, check if we already have 4 best sellers
+    if (newBestSellerStatus) {
+      const currentBestSellersCount = await Product.countDocuments({ bestSeller: true });
+      if (currentBestSellersCount >= 4) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Cannot set more than 4 products as best sellers" 
+        });
+      }
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { bestSeller: newBestSellerStatus },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Product ${updatedProduct.name} has been ${newBestSellerStatus ? 'set as' : 'removed from'} best seller`,
+      data: updatedProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getBestSellers = async (req, res) => {
+  try {
+    const bestSellers = await Product.find({ bestSeller: true })
+      .select("name price images rating description")
+      .limit(4);
+
+    return res.status(200).json({
+      success: true,
+      message: "Best sellers fetched successfully",
+      data: bestSellers,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -333,4 +392,6 @@ module.exports = {
   getProductByName,
   blacklistProduct,
   removeFromBlacklist,
+  toggleBestSeller,
+  getBestSellers,
 };

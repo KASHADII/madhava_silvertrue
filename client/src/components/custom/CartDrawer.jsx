@@ -16,7 +16,7 @@ import CartProduct from "./CartProduct";
 import LinkButton from "./LinkButton";
 
 const CartDrawer = ({ showLabel = false }) => {
-  const { cartItems, totalQuantity, totalPrice } = useSelector(
+  const { cartItems, totalQuantity, totalPrice, appliedDiscount, discountAmount, finalPrice } = useSelector(
     (state) => state.cart
   );
 
@@ -37,9 +37,18 @@ const CartDrawer = ({ showLabel = false }) => {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+          <DrawerTitle>Shopping Cart</DrawerTitle>
           <DrawerDescription>
-            Total Items : {totalQuantity}, Total Price : ₹{totalPrice}
+            Total Items: {totalQuantity}
+            {appliedDiscount ? (
+              <div className="mt-2">
+                <div className="text-sm">Subtotal: ₹{totalPrice}</div>
+                <div className="text-sm text-green-600">Discount ({appliedDiscount.code}): -₹{discountAmount}</div>
+                <div className="font-medium">Total: ₹{finalPrice}</div>
+              </div>
+            ) : (
+              <div className="mt-2 font-medium">Total: ₹{totalPrice}</div>
+            )}
           </DrawerDescription>
         </DrawerHeader>
 
