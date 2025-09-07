@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartDrawer from "./CartDrawer";
+import CustomerSupport from "./CustomerSupport";
 import { User, MapPin, Store, Heart, Search as SearchIcon } from "lucide-react";
 import LogoutToggle from "./LogoutToggle";
 import { useSelector } from "react-redux";
@@ -131,6 +132,8 @@ const Navbar = () => {
               <span className="hidden sm:inline uppercase tracking-wide">Account</span>
             </Link>
           )}
+
+          <CustomerSupport />
 
           <button className="hidden sm:flex items-center gap-2 text-sm">
             <Heart size={20} strokeWidth={1.5} />

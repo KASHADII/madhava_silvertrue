@@ -11,6 +11,7 @@ import {
   Tag,
   Percent,
   List,
+  MessageCircle,
 } from "lucide-react";
 
 import {
@@ -61,6 +62,11 @@ const items = [
     title: "Orders",
     url: "/admin/dashboard/orders",
     icon: PackageSearch,
+  },
+  {
+    title: "Support Messages",
+    url: "/admin/dashboard/support",
+    icon: MessageCircle,
   },
   {
     title: "Analytics",

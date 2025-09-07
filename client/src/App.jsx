@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/custom/Navbar";
-import { ThemeProvider } from "./components/provider/theme-provider";
 import Footer from "./components/custom/Footer";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -29,6 +28,7 @@ import Discounts from "./components/custom/Discounts";
 import DiscountForm from "./pages/DiscountForm";
 import DiscountProductSelection from "./pages/DiscountProductSelection";
 import ProductList from "./components/custom/ProductList";
+import SupportMessages from "./components/custom/SupportMessages";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -125,6 +125,14 @@ export default function App() {
       ),
     },
     {
+      path: "/admin/dashboard/support",
+      element: (
+        <ProtectedRoute>
+          <AdminLayout children={<SupportMessages />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
       path: "/admin/dashboard/settings",
       element: (
         <ProtectedRoute>
@@ -208,12 +216,10 @@ export default function App() {
 
   return (
     <>
-      <ThemeProvider>
-        <Provider store={store}>
-          <Toaster />
-          <RouterProvider router={router} />
-        </Provider>
-      </ThemeProvider>
+      <Provider store={store}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </Provider>
     </>
   );
 }

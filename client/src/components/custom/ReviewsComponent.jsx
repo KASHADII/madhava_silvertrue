@@ -183,13 +183,13 @@ const ReviewsComponent = ({ productId }) => {
 
   return (
     <div className="w-full">
-      <h3 className="font-extrabold text-2xl text-gray-800 dark:text-white mb-8 text-center">
+      <h3 className="font-extrabold text-2xl text-gray-800 mb-8 text-center">
         Reviews
       </h3>
 
       {/* WRITE REVIEW SECTION */}
-      <div className="bg-gray-50 dark:bg-zinc-800 p-6 rounded-lg border border-gray-200 dark:border-zinc-700 mb-8">
-        <h4 className="font-semibold text-lg text-gray-700 dark:text-customIsabelline mb-4">
+      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
+        <h4 className="font-semibold text-lg text-gray-700 mb-4">
           Write a review
         </h4>
         <Textarea
@@ -205,7 +205,7 @@ const ReviewsComponent = ({ productId }) => {
         />
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Your Rating
             </label>
             <StarRating
@@ -236,7 +236,7 @@ const ReviewsComponent = ({ productId }) => {
         {reviewList?.map((review) => (
           <div
             key={review?._id}
-            className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm dark:bg-zinc-900 dark:border-zinc-700"
+            className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm"
           >
             {/* Reviewer info */}
             <div className="flex items-center mb-4">
@@ -246,7 +246,7 @@ const ReviewsComponent = ({ productId }) => {
                 className="w-10 h-10 rounded-full mr-4 border border-gray-300"
               />
               <div>
-                <h4 className="font-medium text-gray-900 dark:text-white">{review?.userId?.name}</h4>
+                <h4 className="font-medium text-gray-900">{review?.userId?.name}</h4>
                 <div className="flex items-center mt-1">
                   <StarRating
                     rating={review?.rating}
@@ -273,33 +273,33 @@ const ReviewsComponent = ({ productId }) => {
                 }
               />
             ) : (
-              <p className="text-gray-600 text-sm dark:text-customGray">
+              <p className="text-gray-600 text-sm">
                 {review?.review}
               </p>
             )}
 
             {/* Reply section */}
             {review?.replies?.length > 0 && (
-              <div className="mt-5 bg-gray-50 p-4 rounded-lg border border-gray-200 dark:bg-zinc-800 dark:border-zinc-600">
-                <h5 className="font-bold text-sm text-gray-700 mb-3 dark:text-customYellow">
+              <div className="mt-5 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <h5 className="font-bold text-sm text-gray-700 mb-3">
                   Replies ({review?.replies?.length})
                 </h5>
                 <div className="space-y-4">
                   {review?.replies?.map((reply) => (
                     <div
                       key={reply?._id}
-                      className="flex items-start space-x-4 border-b border-gray-200 dark:border-zinc-600 pb-3 last:border-none"
+                      className="flex items-start space-x-4 border-b border-gray-200 pb-3 last:border-none"
                     >
                       <img
                         src="https://via.placeholder.com/32"
                         alt={reply?.userId?.name}
-                        className="w-8 h-8 rounded-full border border-gray-300 dark:border-zinc-600"
+                        className="w-8 h-8 rounded-full border border-gray-300"
                       />
                       <div className="flex-1">
-                        <h6 className="font-medium text-gray-800 text-sm dark:text-customIsabelline capitalize">
+                        <h6 className="font-medium text-gray-800 text-sm capitalize">
                           {reply?.userId?.name}
                         </h6>
-                        <p className="text-gray-600 text-sm dark:text-customGray">
+                        <p className="text-gray-600 text-sm">
                           {reply?.review}
                         </p>
                       </div>
@@ -310,7 +310,7 @@ const ReviewsComponent = ({ productId }) => {
             )}
 
             {replyingTo === review?._id && (
-              <div className="mt-4 p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <Textarea
                   placeholder="Write your reply..."
                   value={newReply?.review}
@@ -338,7 +338,7 @@ const ReviewsComponent = ({ productId }) => {
               </div>
             )}
 
-            <div className="flex flex-wrap gap-4 justify-start items-center mt-4 pt-4 border-t border-gray-200 dark:border-zinc-600">
+            <div className="flex flex-wrap gap-4 justify-start items-center mt-4 pt-4 border-t border-gray-200">
               <button
                 className="text-sm text-customYellow hover:underline font-medium"
                 onClick={() =>

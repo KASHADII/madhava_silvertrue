@@ -277,7 +277,7 @@ const CreateProducts = () => {
                       style={{ backgroundColor: color }}
                     ></div>
 
-                    <span className="text-sm mr-1 dark:text-slate-900">
+                    <span className="text-sm mr-1 text-slate-900">
                       {color}
                     </span>
                     <Button

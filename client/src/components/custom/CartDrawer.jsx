@@ -27,7 +27,7 @@ const CartDrawer = ({ showLabel = false }) => {
           <Badge className={`absolute px-1 py-0`}>{totalQuantity}</Badge>
         )}
         <ShoppingCart
-          className="text-gray-800 dark:text-white hover:scale-105 transition-all ease-in-out cursor-pointer"
+          className="text-gray-800 hover:scale-105 transition-all ease-in-out cursor-pointer"
           strokeWidth={1.3}
           size={28}
         />

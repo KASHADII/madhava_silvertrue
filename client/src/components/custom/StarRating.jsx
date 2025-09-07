@@ -70,7 +70,7 @@ const StarRating = ({
         })}
       </div>
       {showLabel && (
-        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+        <span className="ml-2 text-sm text-gray-600">
           {rating > 0 ? `${rating} out of ${maxStars}` : "No rating"}
         </span>
       )}

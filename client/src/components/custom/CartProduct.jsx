@@ -61,7 +61,7 @@ const CartProduct = ({
         alt={name}
         className="w-[30rem] sm:w-[20rem] h-[20rem] object-cover rounded-t-2xl"
       />
-      <div className="px-3 grid gap-1 py-2 absolute bg-white dark:bg-zinc-900 w-full bottom-0 rounded-xl">
+      <div className="px-3 grid gap-1 py-2 absolute bg-white w-full bottom-0 rounded-xl">
         <h2 className="text-md">{name}</h2>
         <span className="font-semibold text-md">₹{price}</span>
 

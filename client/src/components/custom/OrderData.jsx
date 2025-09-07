@@ -128,7 +128,7 @@ const OrderData = ({
       {products.map((product) => (
         <div
           key={product._id}
-          className="flex flex-col sm:flex-row justify-between items-end sm:items-center border p-3 rounded-lg bg-gray-100 dark:bg-zinc-900"
+          className="flex flex-col sm:flex-row justify-between items-end sm:items-center border p-3 rounded-lg bg-gray-100"
         >
           <div className="flex items-center gap-2">
             <img
@@ -155,11 +155,11 @@ const OrderData = ({
             </div>
           </div>
           <div className="flex sm:flex-col gap-3 sm:gap-0 mt-2 sm:mt-0 sm:items-center">
-            <h2 className="text-md sm:text-xl font-bold flex items-center dark:text-customYellow">
+            <h2 className="text-md sm:text-xl font-bold flex items-center">
               <IndianRupee size={18} />
               {product?.id?.price}
             </h2>
-            <p className="dark:text-customYellow text-end">
+            <p className="text-customYellow text-end">
               Qty: {product?.quantity}
             </p>
           </div>
@@ -175,7 +175,7 @@ const OrderData = ({
         </span>
         <span
           onClick={handleDownloadInvoice}
-          className="hover:underline text-sm cursor-pointer flex items-center gap-1 dark:text-customYellow"
+          className="hover:underline text-sm cursor-pointer flex items-center gap-1"
         >
           <ArrowDownToLine size={10} />
           Download Invoice
