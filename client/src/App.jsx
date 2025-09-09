@@ -24,6 +24,10 @@ import { Toaster } from "./components/ui/toaster";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import Catalogue from "./pages/Catalogue";
 import About from "./pages/About";
+import FAQ from "./pages/FAQ";
+import ReturnPolicy from "./pages/ReturnPolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
 import Discounts from "./components/custom/Discounts";
 import DiscountForm from "./pages/DiscountForm";
 import DiscountProductSelection from "./pages/DiscountProductSelection";
@@ -201,6 +205,38 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <RootLayout children={<About />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/faq",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<FAQ />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/return-policy",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<ReturnPolicy />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/privacy-policy",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<PrivacyPolicy />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/terms-conditions",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<TermsConditions />} />
         </ProtectedRoute>
       ),
     },
