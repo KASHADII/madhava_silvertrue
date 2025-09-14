@@ -21,7 +21,7 @@ const Footer = () => {
     <footer className="bg-white border-t border-gray-200">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
@@ -91,23 +91,23 @@ const Footer = () => {
             <h4 className="text-lg font-light text-black mb-4">Customer Service</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                <a href="mailto:info@madhava.com" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
                   Contact Support
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
-                  Shipping Info
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
-                  Returns & Exchanges
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                <a href="mailto:info@madhava.com" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
                   Size Guide
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@madhava.com" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Track Order
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@madhava.com" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Shipping Info
                 </a>
               </li>
             </ul>
@@ -133,6 +133,33 @@ const Footer = () => {
                 <span className="text-gray-600 text-sm">info@madhava.com</span>
               </div>
             </div>
+          </div>
+
+          {/* Legal & Policies */}
+          <div>
+            <h4 className="text-lg font-light text-black mb-4">Legal & Policies</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/faq" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link to="/return-policy" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Return & Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy-policy" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms-conditions" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Terms & Conditions
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -178,9 +205,9 @@ const Footer = () => {
             <p className="text-xs text-gray-500">
               © 2024 Madhava Silver. All rights reserved.
               <span className="mx-2">|</span>
-              <a href="#" className="hover:text-[#D4AF37] transition-colors">Privacy Policy</a>
+              <Link to="/privacy-policy" className="hover:text-[#D4AF37] transition-colors">Privacy Policy</Link>
               <span className="mx-2">|</span>
-              <a href="#" className="hover:text-[#D4AF37] transition-colors">Terms of Service</a>
+              <Link to="/terms-conditions" className="hover:text-[#D4AF37] transition-colors">Terms of Service</Link>
             </p>
           </div>
           <div className="flex items-center gap-2">
