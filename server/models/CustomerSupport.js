@@ -46,3 +46,4 @@ const customerSupportSchema = mongoose.Schema(
 const CustomerSupport = mongoose.model("CustomerSupport", customerSupportSchema);
 
 module.exports = CustomerSupport;
+

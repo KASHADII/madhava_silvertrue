@@ -19,3 +19,4 @@ router.put("/:id/status", verifyToken, updateSupportMessageStatus);
 router.delete("/:id", verifyToken, deleteSupportMessage);
 
 module.exports = router;
+
