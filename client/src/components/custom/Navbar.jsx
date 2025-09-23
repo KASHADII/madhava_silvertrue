@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartDrawer from "./CartDrawer";
-import CustomerSupport from "./CustomerSupport";
 import { User, MapPin, Store, Heart, Search as SearchIcon } from "lucide-react";
 import LogoutToggle from "./LogoutToggle";
 import { useSelector } from "react-redux";
@@ -133,7 +132,6 @@ const Navbar = () => {
             </Link>
           )}
 
-          <CustomerSupport />
 
           <button className="hidden sm:flex items-center gap-2 text-sm">
             <Heart size={20} strokeWidth={1.5} />
@@ -162,9 +160,6 @@ const Navbar = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Link to="#" className="text-gray-700 hover:text-black">Gold with Lab Diamonds</Link>
-
-        <Link to="#" className="text-gray-700 hover:text-black">Madhava Gift Card</Link>
 
         <DropdownMenu>
           <DropdownMenuTrigger className="hover:text-black">Gift Store</DropdownMenuTrigger>
@@ -193,7 +188,8 @@ const Navbar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="hover:text-black">More at Madhava Silver</DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>About</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/support")}>Support</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/faq")}>FAQ</DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate("/catalogue")}>Catalogue</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

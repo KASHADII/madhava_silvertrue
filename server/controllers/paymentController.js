@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const Order = require("../models/Order");
 const crypto = require("crypto");
+const shiprocketService = require("../services/shiprocketService");
 
 let instance = null;
 let validatePaymentVerification = () => false;
@@ -82,6 +83,7 @@ const verifyPayment = async (req, res) => {
       amount,
       productArray,
       address,
+      shippingAddress,
     } = req.body;
 
     const signature = crypto
@@ -101,6 +103,12 @@ const verifyPayment = async (req, res) => {
         .json({ success: false, message: "Payment verification failed" });
     }
 
+    // Get user details
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
     // Update user and product info
     for (const product of productArray) {
       await User.findByIdAndUpdate(
@@ -114,7 +122,8 @@ const verifyPayment = async (req, res) => {
       );
     }
 
-    await Order.create({
+    // Create order first
+    const order = await Order.create({
       amount: amount / 100,
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
@@ -122,9 +131,65 @@ const verifyPayment = async (req, res) => {
       products: productArray,
       address: address,
       userId: userId,
+      shipping: {
+        shippingAddress: shippingAddress || {
+          name: user.name,
+          phone: user.phone || "0000000000",
+          email: user.email,
+          address: address,
+          city: "Mumbai",
+          state: "Maharashtra",
+          pincode: "400001",
+          country: "India",
+        },
+      },
     });
 
-    return res.status(200).json({ success: true, message: "Payment Verified" });
+    // Create shipment with Shiprocket (async, don't block response)
+    try {
+      const shipmentData = {
+        orderId: order._id.toString(),
+        customerName: user.name,
+        customerEmail: user.email,
+        customerPhone: user.phone || "0000000000",
+        billingAddress: address,
+        billingCity: "Mumbai",
+        billingState: "Maharashtra",
+        billingPincode: "400001",
+        subTotal: amount / 100,
+        items: productArray.map(item => ({
+          id: item.id,
+          name: `Product ${item.id}`, // You might want to fetch actual product name
+          quantity: item.quantity,
+          price: 0, // You might want to fetch actual price
+        })),
+      };
+
+      const shipmentResult = await shiprocketService.createShipment(shipmentData);
+      
+      if (shipmentResult.success) {
+        // Update order with shipment details
+        await Order.findByIdAndUpdate(order._id, {
+          "shipping.shipmentId": shipmentResult.shipmentId,
+          "shipping.awbCode": shipmentResult.awbCode,
+          "shipping.courierName": shipmentResult.courierName,
+          "shipping.trackingUrl": `https://shiprocket.co/tracking/${shipmentResult.awbCode}`,
+        });
+
+        console.log(`✅ Shipment created successfully for order ${order._id}: ${shipmentResult.awbCode}`);
+      } else {
+        console.error(`❌ Failed to create shipment for order ${order._id}:`, shipmentResult.error);
+      }
+    } catch (shipmentError) {
+      console.error(`❌ Shiprocket error for order ${order._id}:`, shipmentError.message);
+      // Don't fail the order creation if shipment fails
+    }
+
+    return res.status(200).json({ 
+      success: true, 
+      message: "Payment Verified",
+      orderId: order._id,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

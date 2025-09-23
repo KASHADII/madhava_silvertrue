@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "../ui/card";
-import { ArrowDownToLine, IndianRupee } from "lucide-react";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { ArrowDownToLine, IndianRupee, Truck, Package, ExternalLink, MapPin } from "lucide-react";
 import { PDFDocument,rgb } from "pdf-lib";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 const OrderData = ({
   amount = 100,
@@ -10,7 +14,72 @@ const OrderData = ({
   createdAt = "2021-09-01",
   updatedAt = "2021-09-01",
   products,
+  shipping = {},
+  _id: orderId,
 }) => {
+  const [trackingData, setTrackingData] = useState(null);
+  const [loadingTracking, setLoadingTracking] = useState(false);
+  const { toast } = useToast();
+
+  const handleTrackShipment = async () => {
+    if (!shipping.awbCode) {
+      toast({
+        title: "No tracking available",
+        description: "AWB code not found for this order",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoadingTracking(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/shipping/track/${shipping.awbCode}`
+      );
+      
+      if (response.data.success) {
+        setTrackingData(response.data.data);
+        toast({
+          title: "Tracking data loaded",
+          description: "Shipment tracking information retrieved",
+        });
+      } else {
+        toast({
+          title: "Tracking failed",
+          description: response.data.message || "Failed to get tracking data",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch tracking data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingTracking(false);
+    }
+  };
+
+  const getShippingStatusColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "picked_up":
+        return "bg-blue-100 text-blue-800";
+      case "in_transit":
+        return "bg-purple-100 text-purple-800";
+      case "out_for_delivery":
+        return "bg-orange-100 text-orange-800";
+      case "delivered":
+        return "bg-green-100 text-green-800";
+      case "failed":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   const handleDownloadInvoice = async () => {
     try {
       const pdfDoc = await PDFDocument.create();
@@ -183,9 +252,101 @@ const OrderData = ({
       </div>
 
       <hr />
-      <span>
-        Delivery At: <span className="capitalize">{address}</span>
-      </span>
+      
+      {/* Shipping Information */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <MapPin className="h-4 w-4 text-gray-600" />
+          <span className="font-medium">Delivery Address:</span>
+        </div>
+        <div className="pl-6 text-sm text-gray-600">
+          {shipping.shippingAddress ? (
+            <div>
+              <div className="font-medium">{shipping.shippingAddress.name}</div>
+              <div>{shipping.shippingAddress.address}</div>
+              <div>{shipping.shippingAddress.city}, {shipping.shippingAddress.state} - {shipping.shippingAddress.pincode}</div>
+              <div>Phone: {shipping.shippingAddress.phone}</div>
+            </div>
+          ) : (
+            <span className="capitalize">{address}</span>
+          )}
+        </div>
+
+        {/* Shipping Status */}
+        {shipping.shippingStatus && (
+          <div className="flex items-center gap-2">
+            <Truck className="h-4 w-4 text-gray-600" />
+            <span className="font-medium">Shipping Status:</span>
+            <Badge className={getShippingStatusColor(shipping.shippingStatus)}>
+              {shipping.shippingStatus.replace('_', ' ').toUpperCase()}
+            </Badge>
+          </div>
+        )}
+
+        {/* AWB Code and Tracking */}
+        {shipping.awbCode && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Package className="h-4 w-4 text-gray-600" />
+              <span className="font-medium">Tracking:</span>
+              <span className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">
+                {shipping.awbCode}
+              </span>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleTrackShipment}
+                disabled={loadingTracking}
+                className="flex items-center gap-1"
+              >
+                <Truck className="h-3 w-3" />
+                {loadingTracking ? "Loading..." : "Track Shipment"}
+              </Button>
+              
+              {shipping.trackingUrl && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => window.open(shipping.trackingUrl, '_blank')}
+                  className="flex items-center gap-1"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                  Track Online
+                </Button>
+              )}
+            </div>
+
+            {/* Tracking Data Display */}
+            {trackingData && (
+              <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                <h4 className="font-medium mb-2">Tracking Information:</h4>
+                <div className="space-y-1 text-sm">
+                  {trackingData.map((track, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{track.status}</span>
+                      <span className="text-gray-500">{track.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Estimated Delivery */}
+        {shipping.estimatedDelivery && (
+          <div className="flex items-center gap-2">
+            <Package className="h-4 w-4 text-gray-600" />
+            <span className="font-medium">Estimated Delivery:</span>
+            <span className="text-sm">
+              {new Date(shipping.estimatedDelivery).toLocaleDateString()}
+            </span>
+          </div>
+        )}
+      </div>
     </Card>
   );
 };

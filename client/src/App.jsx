@@ -33,6 +33,7 @@ import DiscountForm from "./pages/DiscountForm";
 import DiscountProductSelection from "./pages/DiscountProductSelection";
 import ProductList from "./components/custom/ProductList";
 import SupportMessages from "./components/custom/SupportMessages";
+import Support from "./pages/Support";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -213,6 +214,14 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <RootLayout children={<FAQ />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/support",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<Support />} />
         </ProtectedRoute>
       ),
     },

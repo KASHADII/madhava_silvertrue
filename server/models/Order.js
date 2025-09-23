@@ -47,6 +47,68 @@ const orderSchema = new mongoose.Schema(
       enum: ["pending", "packed", "in transit", "completed", "failed"],
       default: "pending",
     },
+    // Shipping details
+    shipping: {
+      shipmentId: {
+        type: String,
+        default: null,
+      },
+      awbCode: {
+        type: String,
+        default: null,
+      },
+      courierName: {
+        type: String,
+        default: null,
+      },
+      trackingUrl: {
+        type: String,
+        default: null,
+      },
+      estimatedDelivery: {
+        type: Date,
+        default: null,
+      },
+      shippingStatus: {
+        type: String,
+        enum: ["pending", "picked_up", "in_transit", "out_for_delivery", "delivered", "failed"],
+        default: "pending",
+      },
+      shippingAddress: {
+        name: {
+          type: String,
+          required: true,
+        },
+        phone: {
+          type: String,
+          required: true,
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        address: {
+          type: String,
+          required: true,
+        },
+        city: {
+          type: String,
+          required: true,
+        },
+        state: {
+          type: String,
+          required: true,
+        },
+        pincode: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          default: "India",
+        },
+      },
+    },
   },
   { timestamps: true }
 );

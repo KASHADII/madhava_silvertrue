@@ -10,6 +10,7 @@ router.use("/orders", require("./OrderRoutes"));
 router.use("/payments", require("./paymentRoutes"));
 router.use("/reviews", require("./ReviewRoutes"));
 router.use("/support", require("./supportRoutes"));
+router.use("/shipping", require("./shippingRoutes"));
 router.use("/auth", require("./authRoutes"));
 
 module.exports = router; 

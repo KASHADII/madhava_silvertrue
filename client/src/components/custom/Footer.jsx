@@ -2,8 +2,6 @@ import React from "react";
 import { Button } from "../ui/button";
 import { 
   FacebookIcon, 
-  Twitter, 
-  Youtube, 
   Instagram, 
   Mail, 
   Phone, 
@@ -33,28 +31,20 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://facebook.com/madhavasilver"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-[#C0C0C0] hover:text-black transition-colors"
               >
                 <FacebookIcon className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://instagram.com/madhavasilver"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-[#C0C0C0] hover:text-black transition-colors"
               >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-[#C0C0C0] hover:text-black transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-[#C0C0C0] hover:text-black transition-colors"
-              >
-                <Youtube className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -90,6 +80,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-light text-black mb-4">Customer Service</h4>
             <ul className="space-y-3">
+              <li>
+                <Link to="/support" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
+                  Customer Support
+                </Link>
+              </li>
               <li>
                 <a href="mailto:info@madhava.com" className="text-gray-600 hover:text-[#C0C0C0] transition-colors">
                   Contact Support
