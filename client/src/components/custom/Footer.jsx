@@ -113,10 +113,10 @@ const Footer = () => {
             <h4 className="text-lg font-light text-black mb-4">Contact Us</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-black" />
+                <MapPin className="h-8 w-8 text-black" />
                 <span className="text-gray-600 text-sm">
-                  123 Jewellery Street<br />
-                  Mumbai, Maharashtra 400001
+                1663, 2nd Crossing, Jat Ke Kue Ka Rasta, Chandpole Bazar<br />
+                Jaipur, Rajasthan - 302039
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-black" />
-                <span className="text-gray-600 text-sm">info@madhava.com</span>
+                <span className="text-gray-600 text-sm">madhavasilver@gmail.com </span>
               </div>
             </div>
           </div>
